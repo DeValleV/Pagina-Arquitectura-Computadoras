@@ -299,10 +299,10 @@
         }
 
         .component-card {
-            background: white;
+            background: var(--dark);
             padding: 1.5rem;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border-left: 4px solid var(--primary);
             transition: all 0.3s ease;
         }
@@ -345,10 +345,10 @@
             width: 100%;
             border-collapse: collapse;
             margin: 1.5rem 0;
-            background: white;
+            background: var(--dark);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .power-table th {
@@ -361,7 +361,8 @@
 
         .power-table td {
             padding: 1rem;
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: var(--text);
         }
 
         .power-table tr:last-child td {
@@ -369,11 +370,11 @@
         }
 
         .power-table tr:nth-child(even) {
-            background: #f8fafc;
+            background: rgba(255,255,255,0.05);
         }
 
         .environment-card {
-            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            background: linear-gradient(135deg, rgba(66,153,225,0.1), rgba(66,153,225,0.2));
             padding: 2rem;
             border-radius: 15px;
             border-left: 5px solid var(--info);
@@ -392,11 +393,11 @@
         }
 
         .environment-card .services strong {
-            color: var(--dark);
+            color: var(--text);
         }
 
         .environment-card .requirements {
-            background: rgba(255,255,255,0.7);
+            background: var(--dark);
             padding: 1rem;
             border-radius: 8px;
             margin-top: 1rem;
@@ -409,7 +410,7 @@
         }
 
         .tips-section {
-            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            background: linear-gradient(135deg, rgba(237,137,54,0.1), rgba(237,137,54,0.2));
             padding: 2rem;
             border-radius: 15px;
             border-left: 5px solid var(--warning);
@@ -442,7 +443,7 @@
         }
 
         .dma-diagram {
-            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(102,126,234,0.2));
             padding: 1.5rem;
             border-radius: 10px;
             margin: 1rem 0;
@@ -463,11 +464,11 @@
         }
 
         .dma-type {
-            background: white;
+            background: var(--dark);
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .dma-type h6 {
@@ -503,7 +504,7 @@
             text-align: center;
             margin: 2rem 0;
             padding: 1rem;
-            background: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.1);
             border-radius: 15px;
         }
 
@@ -927,7 +928,7 @@
                                 <div class="environment-card">
                                     <h5><i class="fas fa-building"></i> Negocios</h5>
                                     <div class="services">
-                                        <strong>Servicios:</strong> ERP, CRM, contabilidad, correo corporativo
+                                        <strong style="color: var(--text);">Servicios:</strong> <span style="color: var(--text);">ERP, CRM, contabilidad, correo corporativo</span>
                                     </div>
                                     <div class="requirements">
                                         <h6>Requisitos:</h6>
@@ -942,7 +943,7 @@
                                 <div class="environment-card">
                                     <h5><i class="fas fa-industry"></i> Industria</h5>
                                     <div class="services">
-                                        <strong>Servicios:</strong> Control maquinaria, monitoreo sensores, SCADA, logística
+                                        <strong style="color: var(--text);">Servicios:</strong> <span style="color: var(--text);">Control maquinaria, monitoreo sensores, SCADA, logística</span>
                                     </div>
                                     <div class="requirements">
                                         <h6>Requisitos:</h6>
@@ -957,7 +958,7 @@
                                 <div class="environment-card">
                                     <h5><i class="fas fa-shopping-cart"></i> Comercio Electrónico</h5>
                                     <div class="services">
-                                        <strong>Servicios:</strong> Tiendas online, carritos compra, pasarelas pago
+                                        <strong style="color: var(--text);">Servicios:</strong> <span style="color: var(--text);">Tiendas online, carritos compra, pasarelas pago</span>
                                     </div>
                                     <div class="requirements">
                                         <h6>Requisitos:</h6>

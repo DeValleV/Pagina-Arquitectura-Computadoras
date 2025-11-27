@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesadores | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #1a202c;
+            --light: #2d3748;
+            --text: #e2e8f0;
+            --text-light: #a0aec0;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --info: #4299e1;
+            --intel-blue: #0071c5;
+            --amd-red: #ed1c24;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .main-content {
+            background: linear-gradient(135deg, rgba(26,32,44,0.95) 0%, rgba(26,32,44,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .brand-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            gap: 1rem;
+        }
+
+        .brand-tab {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .brand-tab.intel {
+            background: linear-gradient(135deg, var(--intel-blue), #005a9e);
+            color: white;
+        }
+
+        .brand-tab.amd {
+            background: linear-gradient(135deg, var(--amd-red), #c41e3a);
+            color: white;
+        }
+
+        .brand-tab.active {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .brand-content {
+            display: none;
+        }
+
+        .brand-content.active {
+            display: block;
+        }
+
+        .tier-section {
+            margin-bottom: 3rem;
+        }
+
+        .tier-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 15px;
+            color: white;
+        }
+
+        .tier-header.low {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+        }
+
+        .tier-header.mid {
+            background: linear-gradient(135deg, #3182ce, #2c5aa0);
+        }
+
+        .tier-header.high {
+            background: linear-gradient(135deg, #d69e2e, #b7791f);
+        }
+
+        .processors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .processor-card {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .processor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .processor-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+        }
+
+        .spec-value {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .analysis-section {
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(102,126,234,0.2));
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .analysis-section h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .analysis-section p {
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .processors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .spec-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brand-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔥 Procesadores</h1>
+            <p class="subtitle">Guía completa de procesadores Intel y AMD por gamas de rendimiento</p>
+        </header>
+
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span style="margin-left: 0.5rem;">Volver al Inicio</span>
+            </a>
+        </div>
+
+        <div class="main-content">
+            <div class="brand-tabs">
+                <div class="brand-tab intel active" onclick="switchBrand('intel')">
+                    <i class="fab fa-intel"></i> Intel
+                </div>
+                <div class="brand-tab amd" onclick="switchBrand('amd')">
+                    <i class="fab fa-amd"></i> AMD
+                </div>
+            </div>
+
+            <!-- Intel Content -->
+            <div id="intel-content" class="brand-content active">
+                <!-- Baja Gama Intel -->
+                <div class="tier-section">
+                    <div class="tier-header low">
+                        <h2>💚 Baja Gama Intel</h2>
+                        <p>Procesadores de entrada ideales para builds económicas</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i3-13100</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake (13ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">4 / 8</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.4 GHz / 4.5 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">12 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 730</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">60W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Procesador de entrada ideal para builds económicas. Ofrece rendimiento suficiente para ofimática, navegación web, contenido multimedia y gaming casual. Su principal ventaja es la eficiencia energética y bajo costo.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i5-12400</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Alder Lake (12ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">6 / 12</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">2.5 GHz / 4.4 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">18 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 730</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">65W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Considerado uno de los mejores procesadores en relación calidad-precio. Excelente para gaming a 1080p con tarjeta gráfica dedicada y multitarea fluida. Supera en rendimiento a generaciones anteriores de gama alta.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gama Media Intel -->
+                <div class="tier-section">
+                    <div class="tier-header mid">
+                        <h2>💙 Gama Media Intel</h2>
+                        <p>Procesadores versátiles para gaming y productividad</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i5-13400</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake (13ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">10 (6P + 4E) / 16</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">2.5 GHz / 4.6 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">20 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 730</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">65W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Evolución natural del 12400 con núcleos eficientes adicionales. Ofrece notable mejora en productividad y multitarea. Ideal para gaming 1080p/1440p, streaming ligero y edición básica de video.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i5-13600K</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake (13ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">14 (6P + 8E) / 20</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.5 GHz / 5.1 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">24 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 770</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">125W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Uno de los procesadores más versátiles del mercado. Destaca tanto en gaming como en productividad. Permite overclocking y rinde cerca de los i7 de generación anterior. Perfecto para usuarios exigentes.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i7-13700K</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake (13ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">16 (8P + 8E) / 24</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.4 GHz / 5.4 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">30 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 770</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">125W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Procesador de alto rendimiento para usuarios que necesitan potencia tanto para gaming como para trabajo profesional. Excelente en edición de video, renderizado 3D y streaming de alta calidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alta Gama Media Intel -->
+                <div class="tier-section">
+                    <div class="tier-header high">
+                        <h2>💛 Alta Gama Media Intel</h2>
+                        <p>Procesadores de alto rendimiento para profesionales</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i7-14700K</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake Refresh (14ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">20 (8P + 12E) / 28</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.4 GHz / 5.6 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">33 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 770</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">125W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>La mayor evolución de la 14ª generación con 4 núcleos eficientes adicionales. Ofrece mejora significativa en productividad y rendimiento multi-núcleo frente al 13700K.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i9-13900K</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake (13ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">24 (8P + 16E) / 32</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.0 GHz / 5.8 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">36 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 770</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">125W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Flagship de la 13ª generación. Ofrece rendimiento extremo en todas las áreas. Requiere refrigeración de alta gama pero entrega el máximo desempeño para gaming y estaciones de trabajo.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i9-13900KS</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake (13ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">24 (8P + 16E) / 32</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.2 GHz / 6.0 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">36 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 770</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">150W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Versión especial que alcanza 6.0 GHz de fábrica. El primer procesador de consumo en lograr esta frecuencia. Rendimiento máximo para entusiastas y profesionales.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alta Gama Intel -->
+                <div class="tier-section">
+                    <div class="tier-header high">
+                        <h2>🔥 Alta Gama Intel</h2>
+                        <p>Lo máximo en rendimiento Intel</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i9-14900K</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake Refresh (14ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">24 (8P + 16E) / 32</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.2 GHz / 6.0 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">36 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 770</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">125W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>El procesador más rápido de Intel para el usuario general. Mejoras en frecuencia y eficiencia respecto al 13900K. Máximo rendimiento en gaming y aplicaciones profesionales.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">Intel Core i9-14900KS</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Raptor Lake Refresh (14ª Gen)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">24 (8P + 16E) / 32</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.2 GHz / 6.2 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">36 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Intel UHD Graphics 770</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">150W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">LGA 1700</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>La versión más extrema, alcanzando 6.2 GHz de fábrica. Ofrece el máximo rendimiento posible en single-core y multi-core. Para usuarios que buscan lo absoluto sin importar el costo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AMD Content -->
+            <div id="amd-content" class="brand-content">
+                <!-- Baja Gama AMD -->
+                <div class="tier-section">
+                    <div class="tier-header low">
+                        <h2>💚 Baja Gama AMD</h2>
+                        <p>Procesadores AMD de entrada con excelente valor</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 5 5600G</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 3 (Cezanne)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">6 / 12</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.9 GHz / 4.4 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">16 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Vega 7 (512 shaders)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">65W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM4</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Rey de los gráficos integrados. Permite gaming casual a 1080p en configuraciones bajas sin tarjeta gráfica. Excelente para builds económicas y HTPC.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 5 5600</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 3 (Vermeer)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">6 / 12</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.5 GHz / 4.4 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">32 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">No</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">65W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM4</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Clásico moderno con excelente relación precio-rendimiento. Ideal para gaming con GPU dedicada. Ofrece gran rendimiento en plataforma AM4 de bajo costo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gama Media AMD -->
+                <div class="tier-section">
+                    <div class="tier-header mid">
+                        <h2>💙 Gama Media AMD</h2>
+                        <p>Procesadores AMD equilibrados para gaming y productividad</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 5 7600</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 4 (Raphael)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">6 / 12</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.8 GHz / 5.1 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">32 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Graphics (básica)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">65W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM5</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Entrada ideal a plataforma AM5. Soporta DDR5 y PCIe 5.0. Excelente rendimiento en gaming y eficiencia energética. Futuro-proof.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 7 5700X</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 3 (Vermeer)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">8 / 16</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">3.4 GHz / 4.6 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">32 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">No</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">65W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM4</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Versión eficiente de 8 núcleos. Perfecto para quienes necesitan más multitarea y rendimiento en productividad sin cambiar plataforma.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 7 7700X</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 4 (Raphael)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">8 / 16</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">4.5 GHz / 5.4 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">32 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Graphics (básica)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">105W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM5</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Alto rendimiento en plataforma AM5. Excelente para gaming y trabajo. Soporta las últimas tecnologías como DDR5 y PCIe 5.0.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alta Gama Media AMD -->
+                <div class="tier-section">
+                    <div class="tier-header high">
+                        <h2>💛 Alta Gama Media AMD</h2>
+                        <p>Procesadores AMD de alto rendimiento</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 9 7900X</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 4 (Raphael)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">12 / 24</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">4.7 GHz / 5.6 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">64 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Graphics (básica)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">170W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM5</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Procesador profesional con 12 núcleos de alto rendimiento. Ideal para estaciones de trabajo, renderizado y streaming de alta calidad.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 9 7900X3D</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 4 (Raphael) con 3D-V-Cache</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">12 / 24</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">4.4 GHz / 5.6 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">128 MB L3 (64 MB + 64 MB 3D)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Graphics (básica)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">120W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM5</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Combina alta cantidad de núcleos con tecnología 3D-V-Cache. Excelente equilibrio entre gaming y productividad.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 7 7800X3D</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 4 (Raphael) con 3D-V-Cache</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">8 / 16</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">4.2 GHz / 5.0 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">96 MB L3 (32 MB + 64 MB 3D)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Graphics (básica)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">120W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM5</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>El rey absoluto del gaming. La tecnología 3D-V-Cache le da ventaja significativa en juegos, superando a procesadores más costosos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alta Gama AMD -->
+                <div class="tier-section">
+                    <div class="tier-header high">
+                        <h2>🔥 Alta Gama AMD</h2>
+                        <p>Lo máximo en rendimiento AMD</p>
+                    </div>
+                    <div class="processors-grid">
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 9 7950X</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 4 (Raphael)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">16 / 32</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">4.5 GHz / 5.7 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">64 MB L3</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Graphics (básica)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">170W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM5</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Flagship de AMD para usuarios generales. Máximo rendimiento multi-núcleo para profesionales creativos y estaciones de trabajo.</p>
+                            </div>
+                        </div>
+
+                        <div class="processor-card">
+                            <h3 class="processor-name">AMD Ryzen 9 7950X3D</h3>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Arquitectura</span>
+                                    <span class="spec-value">Zen 4 (Raphael) con 3D-V-Cache</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Núcleos/Hilos</span>
+                                    <span class="spec-value">16 / 32</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Frecuencia Base/Boost</span>
+                                    <span class="spec-value">4.2 GHz / 5.7 GHz</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Cache</span>
+                                    <span class="spec-value">128 MB L3 (64 MB + 64 MB 3D)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">GPU Integrada</span>
+                                    <span class="spec-value">Radeon Graphics (básica)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">TDP</span>
+                                    <span class="spec-value">120W</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Socket</span>
+                                    <span class="spec-value">AM5</span>
+                                </div>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Análisis</h4>
+                                <p>Lo mejor de ambos mundos: 16 núcleos para productividad extrema y tecnología 3D-V-Cache para gaming de élite. El procesador más versátil de AMD.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchBrand(brand) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.brand-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.brand-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab and content
+            document.querySelector(`.brand-tab.${brand}`).classList.add('active');
+            document.getElementById(`${brand}-content`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

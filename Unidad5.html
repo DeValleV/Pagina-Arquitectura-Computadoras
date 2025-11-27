@@ -304,7 +304,7 @@
         }
 
         .tier-description {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.1);
             padding: 1rem 2rem;
             border-radius: 0 0 10px 10px;
             margin-bottom: 1.5rem;
@@ -335,10 +335,10 @@
             width: 100%;
             border-collapse: collapse;
             margin: 1.5rem 0;
-            background: white;
+            background: var(--dark);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .processor-table th {
@@ -352,8 +352,9 @@
 
         .processor-table td {
             padding: 1rem;
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             font-size: 0.9rem;
+            color: var(--text);
         }
 
         .processor-table tr:last-child td {
@@ -361,12 +362,12 @@
         }
 
         .processor-table tr:nth-child(even) {
-            background: #f8fafc;
+            background: rgba(255,255,255,0.05);
         }
 
         .processor-table .processor-name {
             font-weight: 600;
-            color: var(--dark);
+            color: var(--text);
         }
 
         /* Memory Types */
@@ -378,10 +379,10 @@
         }
 
         .memory-card {
-            background: white;
+            background: var(--dark);
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             border-left: 5px solid var(--info);
             transition: all 0.3s ease;
         }
@@ -490,7 +491,7 @@
 
         /* Comparison Table */
         .comparison-section {
-            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(102,126,234,0.2));
             padding: 2rem;
             border-radius: 15px;
             margin: 2rem 0;
@@ -507,10 +508,10 @@
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            background: var(--dark);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .comparison-table th {
@@ -524,7 +525,8 @@
         .comparison-table td {
             padding: 1rem;
             text-align: center;
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: var(--text);
         }
 
         .comparison-table tr:last-child td {
@@ -532,12 +534,12 @@
         }
 
         .comparison-table tr:nth-child(even) {
-            background: #f8fafc;
+            background: rgba(255,255,255,0.05);
         }
 
         /* Recommendations */
         .recommendations {
-            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            background: linear-gradient(135deg, rgba(72,187,120,0.1), rgba(72,187,120,0.2));
             padding: 2rem;
             border-radius: 15px;
             border-left: 5px solid var(--success);
@@ -557,7 +559,7 @@
         }
 
         .rec-card {
-            background: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.1);
             padding: 1.5rem;
             border-radius: 10px;
             border-left: 3px solid var(--success);
