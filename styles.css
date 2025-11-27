@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 * {
 	box-sizing: border-box;
 }
@@ -244,3 +245,251 @@ footer p {
 		font-size: 0.9rem;
 	}
 }
+=======
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Segoe UI', Arial, sans-serif;
+	margin: 0;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #222;
+	padding-bottom: 80px;
+}
+
+header {
+	background: linear-gradient(135deg, #2d3e50 0%, #1a252f 100%);
+	color: #fff;
+	padding: 2rem 0 1.5rem 0;
+	text-align: center;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+header h1 {
+	margin: 0 0 0.5rem 0;
+	font-size: 2.5rem;
+	font-weight: 700;
+}
+
+header .subtitle {
+	margin: 0;
+	font-size: 1.1rem;
+	opacity: 0.9;
+	font-weight: 300;
+}
+
+main {
+	max-width: 1000px;
+	margin: 2rem auto;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+	padding: 2.5rem;
+	min-height: calc(100vh - 200px);
+}
+
+.units-container h2 {
+	text-align: center;
+	color: #2d3e50;
+	font-size: 2rem;
+	margin-bottom: 2rem;
+	border-bottom: 3px solid #667eea;
+	padding-bottom: 1rem;
+}
+
+/* Unit Card Styles */
+.unit-card {
+	margin-bottom: 1.5rem;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	background: #fafafa;
+}
+
+.unit-card:hover {
+	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+	border-color: #667eea;
+}
+
+.unit-button {
+	width: 100%;
+	padding: 1.2rem 1.5rem;
+	border: none;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #fff;
+	cursor: pointer;
+	font-size: 1.1rem;
+	font-weight: 600;
+	text-align: left;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	transition: all 0.3s ease;
+}
+
+.unit-button:hover {
+	background: linear-gradient(135deg, #5568d3 0%, #6a3f91 100%);
+	transform: translateX(5px);
+}
+
+.unit-button h3 {
+	margin: 0;
+	font-size: 1.2rem;
+	flex: 1;
+}
+
+.unit-button .arrow {
+	font-size: 1.2rem;
+	transition: transform 0.3s ease;
+	margin-left: 1rem;
+}
+
+.unit-button.active .arrow {
+	transform: rotate(180deg);
+}
+
+/* Unit Content (Subtopics) */
+.unit-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease;
+	background: #fff;
+}
+
+.unit-content.active {
+	max-height: 2000px;
+	padding: 1.5rem;
+	border-top: 2px solid #e0e0e0;
+}
+
+.unit-content .subtopic-button {
+	display: block;
+	width: 100%;
+	padding: 0.9rem 1.2rem;
+	margin-bottom: 0.8rem;
+	border: 2px solid #e0e0e0;
+	background: #f5f5f5;
+	color: #2d3e50;
+	cursor: pointer;
+	border-radius: 6px;
+	font-size: 0.95rem;
+	font-weight: 500;
+	text-align: left;
+	transition: all 0.2s ease;
+}
+
+.unit-content .subtopic-button:hover {
+	background: #667eea;
+	color: #fff;
+	border-color: #667eea;
+	transform: translateX(8px);
+}
+
+.unit-content .subtopic-button:last-child {
+	margin-bottom: 0;
+}
+
+/* Subtopic Content */
+.subtopic-content {
+	display: none;
+	padding: 1.5rem;
+	background: #f9f9f9;
+	border-left: 4px solid #667eea;
+	border-radius: 4px;
+	margin-top: 1rem;
+	animation: slideIn 0.3s ease;
+}
+
+.subtopic-content.active {
+	display: block;
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.subtopic-content h4 {
+	margin: 0 0 1rem 0;
+	color: #667eea;
+	font-size: 1.3rem;
+	border-bottom: 2px solid #667eea;
+	padding-bottom: 0.5rem;
+}
+
+.subtopic-content p {
+	margin: 0 0 1rem 0;
+	line-height: 1.6;
+	color: #444;
+}
+
+.subtopic-content ul {
+	margin: 0;
+	padding-left: 1.5rem;
+	line-height: 1.8;
+}
+
+.subtopic-content li {
+	margin-bottom: 0.6rem;
+	color: #555;
+}
+
+.subtopic-content li strong {
+	color: #2d3e50;
+}
+
+footer {
+	text-align: center;
+	padding: 1.5rem 0;
+	background: #2d3e50;
+	color: #fff;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+}
+
+footer p {
+	margin: 0;
+	font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	header h1 {
+		font-size: 1.8rem;
+	}
+
+	header .subtitle {
+		font-size: 0.95rem;
+	}
+
+	main {
+		padding: 1.5rem;
+		margin: 1rem;
+	}
+
+	.unit-button {
+		padding: 1rem;
+		font-size: 0.95rem;
+	}
+
+	.unit-button h3 {
+		font-size: 1rem;
+	}
+
+	.unit-content .subtopic-button {
+		padding: 0.75rem 1rem;
+		font-size: 0.9rem;
+	}
+}
+>>>>>>> 8f77480259fdd5ffe3e003db81ce5858eda74b6d

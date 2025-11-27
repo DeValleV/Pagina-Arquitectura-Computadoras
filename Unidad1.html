@@ -233,7 +233,7 @@
         }
 
         .topic-card.active .topic-content {
-            max-height: 2000px;
+            max-height: 3000px;
         }
 
         .topic-body {
@@ -331,23 +331,38 @@
             margin-right: 0.5rem;
         }
 
-        /* Diagram Styles */
-        .diagram {
-            background: white;
-            padding: 2rem;
+        /* Component Images */
+        .component-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
             border-radius: 10px;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin: 1.5rem auto;
+            display: block;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .diagram-placeholder {
-            background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
-            padding: 3rem;
-            border-radius: 8px;
-            border: 2px dashed #cbd5e0;
-            color: var(--text-light);
+        .component-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            border-color: var(--primary);
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+        }
+
+        .image-caption {
             font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
         }
 
         /* Footer */
@@ -534,6 +549,11 @@
                                 <h4>¿Qué es la CPU?</h4>
                                 <p>El cerebro del sistema computacional, responsable de ejecutar instrucciones y procesar datos. Es el componente básico de todo dispositivo que procesa datos y realiza cálculos matemáticos.</p>
                                 
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\CPU.jpg" alt="Unidad Central de Procesamiento" class="component-image">
+                                    <p class="image-caption">CPU mostrando sus componentes principales: ALU, Unidad de Control y Registros</p>
+                                </div>
+                                
                                 <div class="features-list">
                                     <li><strong>Función principal:</strong> Recibir e interpretar datos, ejecutar secuencias de instrucciones</li>
                                     <li><strong>Operaciones:</strong> Aritméticas, lógicas y de control</li>
@@ -640,6 +660,11 @@
                             <div class="content-section">
                                 <h4>Dispositivos de E/S</h4>
                                 
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\E-S.jpg" alt="Sistemas de Entrada y Salida" class="component-image">
+                                    <p class="image-caption">Dispositivos de entrada y salida conectados al sistema computacional</p>
+                                </div>
+                                
                                 <div class="comparison-grid">
                                     <div class="comparison-card">
                                         <h5>Dispositivos de Entrada</h5>
@@ -720,6 +745,11 @@
                                 <h4>Tarjeta Madre A7V8X</h4>
                                 <p>Ejemplo de placa base de principios de los 2000s con características típicas de la época.</p>
                                 
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\Tarjeta Madre A7V8X.jpg" alt="Tarjeta Madre A7V8X" class="component-image">
+                                    <p class="image-caption">Tarjeta Madre A7V8X con sus componentes principales identificados</p>
+                                </div>
+                                
                                 <div class="comparison-grid">
                                     <div class="comparison-card">
                                         <h5>Socket del Procesador</h5>
@@ -777,6 +807,11 @@
                                 <h4>Gabinete</h4>
                                 <p>Gabinete COMPAQ serie Presario (aprox. 2002–2005) con placas madre microATX.</p>
                                 
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\gabinete.jpg" alt="Gabinete COMPAQ Presario" class="component-image">
+                                    <p class="image-caption">Gabinete COMPAQ serie Presario con bahías y conectores frontales</p>
+                                </div>
+                                
                                 <div class="comparison-grid">
                                     <div class="comparison-card">
                                         <h5>Características Generales</h5>
@@ -813,6 +848,11 @@
                             <div class="content-section">
                                 <h4>Fuente de Poder</h4>
                                 <p>Fuente de alimentación ATX estándar con conectores típicos de la época.</p>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\fuente de poder.jpg" alt="Fuente de Poder ATX" class="component-image">
+                                    <p class="image-caption">Fuente de poder ATX con conectores de 20 pines, ATX12V y Molex</p>
+                                </div>
                                 
                                 <div class="comparison-grid">
                                     <div class="comparison-card">

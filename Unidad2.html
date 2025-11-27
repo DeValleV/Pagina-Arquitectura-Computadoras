@@ -391,6 +391,40 @@
             top: 0.5rem;
         }
 
+        /* Component Images */
+        .component-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin: 1.5rem auto;
+            display: block;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .component-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            border-color: var(--primary);
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+        }
+
+        .image-caption {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             header h1 {
@@ -461,6 +495,12 @@
                         <div class="topic-body">
                             <div class="content-section">
                                 <h4>Componentes Principales del CPU</h4>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\CPU.jpg" alt="Estructura interna del CPU" class="component-image">
+                                    <p class="image-caption">Organización interna del procesador mostrando ALU, Unidad de Control y Registros</p>
+                                </div>
+                                
                                 <ul class="features-list">
                                     <li><strong>Unidad Aritmético-Lógica (ALU):</strong> Realiza operaciones matemáticas y lógicas</li>
                                     <li><strong>Unidad de Control:</strong> Coordina y controla la ejecución de instrucciones</li>
@@ -524,11 +564,22 @@
 
                             <div class="content-section">
                                 <h4>2.2.2 Registros de Control</h4>
-                                <p>Ubicaciones de almacenamiento de alta velocidad que son visibles solo en modo kernel. Controlan y monitorizan la operación del procesador, siendo esenciales para la estabilidad y seguridad del sistema.</p>
-                            </div>
+                                 <p>Ubicaciones de almacenamiento de alta velocidad que son visibles solo en modo kernel. Controlan y monitorizan la operación del procesador, siendo esenciales para la estabilidad y seguridad del sistema.</p>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\Registros de Control.jpg" alt="Registros de Control del CPU" class="component-image">
+                                    <p class="image-caption">Registros de Control - Visibles solo en modo kernel para gestión del sistema</p>
+                                </div>
+                           </div>
 
                             <div class="content-section">
                                 <h4>2.2.3 Registros de Estado</h4>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\Registros de Estado.jpg" alt="Registros de Estado del CPU" class="component-image">
+                                    <p class="image-caption">Registros de Estado - Banderas y estados de proceso del sistema</p>
+                                </div>
+                                
                                 <div class="cpu-evolution">
                                     <div class="cpu-card">
                                         <h5>En Hardware (Banderas - FLAGS)</h5>
@@ -595,7 +646,13 @@
                             <div class="content-section">
                                 <h4>2.3.2 Segmentación</h4>
                                 <p>Técnica que divide memoria en segmentos, cada uno con tamaño y función específicos. Mejora rendimiento y seguridad, siendo transparente al software en CPUs modernas.</p>
-                                <ul class="features-list">
+                                
+                                 <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\Segmentacion.jpg" alt="Segmentación de memoria" class="component-image">
+                                    <p class="image-caption">Segmentación - División de memoria en segmentos especializados</p>
+                                </div>
+
+                               <ul class="features-list">
                                     <li><strong>Código:</strong> Instrucciones del programa</li>
                                     <li><strong>Datos:</strong> Variables y constantes</li>
                                     <li><strong>Extra de datos:</strong> Datos adicionales</li>
@@ -702,6 +759,10 @@
                                 <div class="cpu-evolution">
                                     <div class="cpu-card">
                                         <h5>1. Intel 8086 (1978)</h5>
+                                            <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\Intel8086.jpg" alt="Procesador Intel 8086" class="component-image">
+                                            <p class="image-caption">Intel 8086 - Primer procesador x86</p>
+                                        </div>
                                         <ul class="cpu-specs">
                                             <li><strong>Arquitectura:</strong> x86 (16 bits)</li>
                                             <li><strong>Frecuencia:</strong> 5-10 MHz</li>
@@ -712,6 +773,10 @@
                                     </div>
                                     <div class="cpu-card">
                                         <h5>2. Intel 80386 (1985)</h5>
+                                         <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\Intel80386.jpg" alt="Procesador Intel 80386" class="component-image">
+                                            <p class="image-caption">Intel 80386 - Primer procesador 32 bits</p>
+                                        </div>
                                         <ul class="cpu-specs">
                                             <li><strong>Arquitectura:</strong> Primero 32 bits x86</li>
                                             <li><strong>Memoria virtual:</strong> 64 TB</li>
@@ -721,6 +786,10 @@
                                     </div>
                                     <div class="cpu-card">
                                         <h5>3. Intel Core i3 (3ra Gen - 2012)</h5>
+                                        <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\IntelCorei3.jpg" alt="Procesador Intel Core i3" class="component-image">
+                                            <p class="image-caption">Intel Core i3 - Procesador moderno con múltiples núcleos</p>
+                                        </div>
                                         <ul class="cpu-specs">
                                             <li><strong>Tecnología:</strong> 22 nm</li>
                                             <li><strong>Características:</strong> Hyper-Threading, Turbo Boost</li>

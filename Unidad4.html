@@ -516,6 +516,40 @@
             top: 0.5rem;
         }
 
+        /* Component Images */
+        .component-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin: 1.5rem auto;
+            display: block;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .component-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            border-color: var(--primary);
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+        }
+
+        .image-caption {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             header h1 {
@@ -590,6 +624,12 @@
                             <div class="content-section">
                                 <h4>Definición y Objetivo</h4>
                                 <p><strong>Definición:</strong> Técnica de dividir problemas grandes en subproblemas más pequeños para resolución simultánea por múltiples procesadores.</p>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\ComputacionParalela.jpg" alt="Computación Paralela" class="component-image">
+                                    <p class="image-caption">Computación Paralela - Múltiples procesadores trabajando simultáneamente</p>
+                                </div>
+                                
                                 <ul class="features-list">
                                     <li><strong>Reducir tiempo de ejecución:</strong> Procesamiento simultáneo acelera resultados</li>
                                     <li><strong>Resolver problemas complejos:</strong> Inviables con un solo procesador</li>
@@ -814,6 +854,11 @@
                             <div class="content-section">
                                 <h4>Concepto Fundamental</h4>
                                 <p>Cada procesador tiene memoria privada e independiente. No existe espacio global de direcciones. Conexión mediante red de alta velocidad (InfiniBand, Ethernet).</p>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\MemoriaDistribuida.jpg" alt="Memoria Distribuida" class="component-image">
+                                    <p class="image-caption">Memoria Distribuida - Procesadores con memoria privada conectados por red</p>
+                                </div>
                             </div>
 
                             <div class="content-section">

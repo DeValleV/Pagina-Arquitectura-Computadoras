@@ -480,6 +480,40 @@
             color: var(--text-light);
         }
 
+        /* Component Images */
+        .component-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin: 1.5rem auto;
+            display: block;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .component-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            border-color: var(--primary);
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+        }
+
+        .image-caption {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             header h1 {
@@ -582,6 +616,12 @@
 
                             <div class="content-section">
                                 <h4>⚡ 3.1.1 CPU - Unidad Central de Procesamiento</h4>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\CPU2.jpg" alt="CPU moderno" class="component-image">
+                                    <p class="image-caption">CPU moderno - Procesador de múltiples núcleos</p>
+                                </div>
+                                
                                 <div class="component-card">
                                     <h5><i class="fas fa-cpu"></i> Evolución del CPU</h5>
                                     <ul class="component-specs">
@@ -609,6 +649,12 @@
                                 <div class="component-grid">
                                     <div class="component-card">
                                         <h5><i class="fas fa-keyboard"></i> Dispositivos de Entrada</h5>
+                                        
+                                        <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\Mouse.jpg" alt="Mouse de alta precisión" class="component-image">
+                                            <p class="image-caption">Mouse - Dispositivo de entrada de alta precisión</p>
+                                        </div>
+                                        
                                         <ul class="component-specs">
                                             <li><strong>Teclado:</strong> Mecánico/membrana, durabilidad, precisión (Ej: Redragon Kumara)</li>
                                             <li><strong>Ratón:</strong> Sensor óptico de alta precisión (Ej: Logitech G203, 8000 DPI)</li>
@@ -617,6 +663,12 @@
                                     </div>
                                     <div class="component-card">
                                         <h5><i class="fas fa-desktop"></i> Dispositivos de Salida</h5>
+                                        
+                                        <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\MonitorBocina.jpg" alt="Monitor y bocinas" class="component-image">
+                                            <p class="image-caption">Monitor y Bocinas - Dispositivos de salida visual y audio</p>
+                                        </div>
+                                        
                                         <ul class="component-specs">
                                             <li><strong>Monitor:</strong> Alta tasa de refresco (Ej: ASUS VG24VQ, 165Hz)</li>
                                             <li><strong>Audio:</strong> Altavoces o audífonos (Ej: Logitech Z313, 2.1 canales)</li>
@@ -624,6 +676,12 @@
                                     </div>
                                     <div class="component-card">
                                         <h5><i class="fas fa-wifi"></i> Conectividad</h5>
+                                        
+                                        <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\PuertosDeConectividad.jpg" alt="Puertos de conectividad" class="component-image">
+                                            <p class="image-caption">Puertos de Conectividad - Interfaces de comunicación del sistema</p>
+                                        </div>
+                                        
                                         <ul class="component-specs">
                                             <li><strong>Puertos:</strong> USB 2.0/3.2, HDMI, DisplayPort, RJ-45, audio HD</li>
                                             <li><strong>Inalámbrica:</strong> Wi-Fi 6, Bluetooth 5.3 (velocidad y estabilidad)</li>
@@ -698,6 +756,12 @@
                         <div class="topic-body">
                             <div class="content-section">
                                 <h4>Memoria RAM (Primaria/Volátil)</h4>
+                                
+                                <div class="image-container">
+                                    <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\RAM.jpg" alt="Memoria RAM" class="component-image">
+                                    <p class="image-caption">Memoria RAM - Almacenamiento temporal de alta velocidad</p>
+                                </div>
+                                
                                 <div class="component-card">
                                     <h5><i class="fas fa-memory"></i> Características de la RAM</h5>
                                     <ul class="component-specs">
@@ -713,6 +777,12 @@
                                 <div class="component-grid">
                                     <div class="component-card">
                                         <h5><i class="fas fa-hdd"></i> SSD (Unidades Estado Sólido)</h5>
+                                        
+                                        <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\SSD.jpg" alt="Unidad SSD" class="component-image">
+                                            <p class="image-caption">SSD - Almacenamiento de estado sólido de alta velocidad</p>
+                                        </div>
+                                        
                                         <ul class="component-specs">
                                             <li><strong>Velocidad:</strong> Alta velocidad de transferencia</li>
                                             <li><strong>Durabilidad:</strong> Sin partes móviles</li>
@@ -721,6 +791,12 @@
                                     </div>
                                     <div class="component-card">
                                         <h5><i class="fas fa-database"></i> HDD (Discos Duros Mecánicos)</h5>
+                                        
+                                        <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\HDD.jpg" alt="Disco duro mecánico" class="component-image">
+                                            <p class="image-caption">HDD - Disco duro mecánico con platos magnéticos</p>
+                                        </div>
+                                        
                                         <ul class="component-specs">
                                             <li><strong>Tecnología:</strong> Platos magnéticos y cabezales</li>
                                             <li><strong>Velocidad:</strong> Más lentos que SSD</li>
@@ -729,6 +805,12 @@
                                     </div>
                                     <div class="component-card">
                                         <h5><i class="fas fa-usb"></i> Unidades Externas</h5>
+                                        
+                                        <div class="image-container">
+                                            <img src="C:\Users\emide\OneDrive\Escritorio\Arquitectura\Imagenes\UnidadesExternas.jpg" alt="Unidades de almacenamiento externas" class="component-image">
+                                            <p class="image-caption">Unidades Externas - Almacenamiento portátil y backups</p>
+                                        </div>
+                                        
                                         <ul class="component-specs">
                                             <li><strong>Conexión:</strong> USB 3.2, Thunderbolt, eSATA</li>
                                             <li><strong>Propósito:</strong> Almacenamiento adicional o backups</li>
