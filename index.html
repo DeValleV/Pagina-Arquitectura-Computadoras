@@ -1,70 +1,413 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Arquitectura de Computadoras</title>
-	<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efectos de partículas en el fondo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        header .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .unit-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .unit-card:hover::before {
+            left: 100%;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.15),
+                0 0 0 1px rgba(255,255,255,0.3),
+                0 0 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .unit-icon {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .unit-card h2 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.7rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .unit-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .unit-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .unit-number {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            font-weight: 700;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            border: 3px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .unit-card:hover .unit-number {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .unit-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0 0 0;
+            text-align: left;
+        }
+
+        .unit-features li {
+            padding: 0.5rem 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .unit-features li::before {
+            content: '▸';
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 6rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+
+        footer p {
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Animaciones */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .unit-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .unit-card:nth-child(2) { animation-delay: 0.2s; }
+        .unit-card:nth-child(3) { animation-delay: 0.4s; }
+        .unit-card:nth-child(4) { animation-delay: 0.6s; }
+        .unit-card:nth-child(5) { animation-delay: 0.8s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .units-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .unit-card {
+                padding: 2rem;
+            }
+            
+            .unit-icon {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .unit-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-	<header>
-		<h1>Arquitectura de Computadoras</h1>
-		<nav>
-			<ul>
-				<li><a href="#intro">Introducción</a></li>
-				<li><a href="#componentes">Componentes Principales</a></li>
-				<li><a href="#tipos">Tipos de Arquitectura</a></li>
-				<li><a href="#ciclo">Ciclo de Instrucción</a></li>
-				<li><a href="#memoria">Jerarquía de Memoria</a></li>
-				<li><a href="#io">Sistemas de Entrada/Salida</a></li>
-				<li><a href="#ejemplos">Ejemplos y Aplicaciones</a></li>
-			</ul>
-		</nav>
-	</header>
-	<main>
-		<section id="intro">
-			<h2>Introducción a la Arquitectura de Computadoras</h2>
-			<p>La arquitectura de computadoras estudia el diseño, organización y funcionamiento de los sistemas computacionales. Incluye el análisis de los componentes internos y su interacción para ejecutar tareas.</p>
-		</section>
-		<section id="componentes">
-			<h2>Componentes Principales</h2>
-			<ul>
-				<li><strong>CPU:</strong> Unidad central de procesamiento, ejecuta instrucciones.</li>
-				<li><strong>Memoria:</strong> Almacena datos e instrucciones.</li>
-				<li><strong>Entrada/Salida (E/S):</strong> Permite la comunicación con el exterior.</li>
-			</ul>
-		</section>
-		<section id="tipos">
-			<h2>Tipos de Arquitectura</h2>
-			<ul>
-				<li><strong>Von Neumann:</strong> Memoria única para datos e instrucciones.</li>
-				<li><strong>Harvard:</strong> Memoria separada para datos e instrucciones.</li>
-			</ul>
-		</section>
-		<section id="ciclo">
-			<h2>Ciclo de Instrucción</h2>
-			<p>El ciclo de instrucción incluye las fases de búsqueda, decodificación, ejecución y almacenamiento de resultados.</p>
-		</section>
-		<section id="memoria">
-			<h2>Jerarquía de Memoria</h2>
-			<ul>
-				<li>Registros</li>
-				<li>Cache</li>
-				<li>Memoria principal (RAM)</li>
-				<li>Almacenamiento secundario (Disco duro, SSD)</li>
-			</ul>
-		</section>
-		<section id="io">
-			<h2>Sistemas de Entrada/Salida</h2>
-			<p>Incluyen dispositivos como teclado, mouse, pantalla, impresora y redes, gestionados por controladores y buses.</p>
-		</section>
-		<section id="ejemplos">
-			<h2>Ejemplos y Aplicaciones</h2>
-			<p>Las arquitecturas modernas se aplican en computadoras personales, servidores, dispositivos móviles y sistemas embebidos.</p>
-		</section>
-	</main>
-	<footer>
-		<p>&copy; 2025 Clase de Arquitectura de Computadoras</p>
-	</footer>
+    <div class="container">
+        <header>
+            <h1>Arquitectura de Computadoras</h1>
+            <p class="subtitle">Explora los fundamentos y componentes esenciales de los sistemas computacionales modernos</p>
+        </header>
+
+        <div class="units-grid">
+            <a href="unidad1.html" class="unit-card">
+                <div class="unit-number">1</div>
+                <div class="unit-icon">🏗️</div>
+                <h2>Modelos de Arquitecturas</h2>
+                <p>Descubre la evolución de las arquitecturas de cómputo desde los modelos clásicos hasta los sistemas modernos</p>
+                <ul class="unit-features">
+                    <li>Arquitecturas Clásicas (Von Neumann)</li>
+                    <li>Sistemas Segmentados (Pipeline)</li>
+                    <li>Multiprocesamiento (SMP/MPP)</li>
+                </ul>
+            </a>
+
+            <a href="unidad2.html" class="unit-card">
+                <div class="unit-number">2</div>
+                <div class="unit-icon">⚙️</div>
+                <h2>Estructura del CPU</h2>
+                <p>Profundiza en el corazón de la computadora: la Unidad Central de Procesamiento</p>
+                <ul class="unit-features">
+                    <li>Organización del procesador</li>
+                    <li>Ciclo de instrucciones</li>
+                    <li>Modos de direccionamiento</li>
+                </ul>
+            </a>
+
+            <a href="unidad3.html" class="unit-card">
+                <div class="unit-number">3</div>
+                <div class="unit-icon">💻</div>
+                <h2>Selección de Componentes</h2>
+                <p>Aprende sobre ensamblaje y selección de componentes para diferentes necesidades</p>
+                <ul class="unit-features">
+                    <li>Chipsets y controladores</li>
+                    <li>Dispositivos de E/S</li>
+                    <li>Fuentes de alimentación</li>
+                </ul>
+            </a>
+
+            <a href="unidad4.html" class="unit-card">
+                <div class="unit-number">4</div>
+                <div class="unit-icon">🚀</div>
+                <h2>Computación Paralela</h2>
+                <p>Explora técnicas avanzadas para procesamiento simultáneo y distribuido</p>
+                <ul class="unit-features">
+                    <li>Memoria compartida vs distribuida</li>
+                    <li>Arquitecturas UMA y NUMA</li>
+                    <li>Casos de estudio reales</li>
+                </ul>
+            </a>
+
+            <a href="unidad5.html" class="unit-card">
+                <div class="unit-number">5</div>
+                <div class="unit-icon">🔥</div>
+                <h2>Procesadores y Memorias</h2>
+                <p>Conoce las diferentes gamas de procesadores y tipos de memoria</p>
+                <ul class="unit-features">
+                    <li>Procesadores por gama</li>
+                    <li>Memoria RAM, ROM, Caché</li>
+                    <li>Tecnologías actuales</li>
+                </ul>
+            </a>
+        </div>
+
+        <footer>
+            <p>© 2024 Arquitectura de Computadoras - Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+    <script>
+        // Efectos interactivos adicionales
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.unit-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+
+            // Efecto de escritura para el título
+            const title = document.querySelector('header h1');
+            const text = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            function typeWriter() {
+                if (i < text.length) {
+                    title.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            
+            // Iniciar efecto de escritura
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
 </body>
 </html>

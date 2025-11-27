@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 2 - Estructura y Funcionamiento del CPU | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .unit-badge {
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .unit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .unit-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unit-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .topic-header:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a3f91);
+        }
+
+        .topic-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8fafc;
+        }
+
+        .topic-card.active .topic-content {
+            max-height: 3000px;
+        }
+
+        .topic-body {
+            padding: 2rem;
+        }
+
+        /* Content Styles */
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section h4 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 0.8rem 0;
+            color: var(--text);
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .cpu-evolution {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .cpu-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+        }
+
+        .cpu-card h5 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cpu-specs {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cpu-specs li {
+            padding: 0.3rem 0;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .cpu-specs li strong {
+            color: var(--dark);
+        }
+
+        .key-concepts {
+            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--success);
+            margin-top: 2rem;
+        }
+
+        .key-concepts h4 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .key-concepts ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-concepts li {
+            padding: 0.5rem 0;
+            color: var(--text);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .key-concepts li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .unit-header h2 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .back-button {
+                text-align: center;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Unidad 2: Estructura y Funcionamiento del CPU</h1>
+            <p class="subtitle">Organización del procesador, registros, ciclo de instrucciones y modos de direccionamiento</p>
+        </header>
+
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span style="margin-left: 0.5rem;">Volver al Inicio</span>
+            </a>
+            <div class="unit-badge">Unidad 2</div>
+        </div>
+
+        <div class="main-content">
+            <div class="unit-header">
+                <h2>⚙️ Estructura y Funcionamiento del CPU</h2>
+                <p>Explora los componentes internos del procesador, su organización, el manejo de registros y los mecanismos fundamentales de ejecución de instrucciones.</p>
+            </div>
+
+            <div class="topics-grid">
+                <!-- Tema 2.1: Organización del Procesador -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>⚙️ 2.1 Organización del Procesador</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Componentes Principales del CPU</h4>
+                                <ul class="features-list">
+                                    <li><strong>Unidad Aritmético-Lógica (ALU):</strong> Realiza operaciones matemáticas y lógicas</li>
+                                    <li><strong>Unidad de Control:</strong> Coordina y controla la ejecución de instrucciones</li>
+                                    <li><strong>Registros:</strong> Memoria de alta velocidad para almacenamiento temporal</li>
+                                    <li><strong>Buses Internos:</strong> Canales de comunicación entre componentes</li>
+                                </ul>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Funciones Específicas</h4>
+                                <div class="cpu-evolution">
+                                    <div class="cpu-card">
+                                        <h5>Unidad Aritmético-Lógica (ALU)</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Operaciones matemáticas:</strong> suma, resta, multiplicación, división</li>
+                                            <li><strong>Operaciones lógicas:</strong> AND, OR, NOT, XOR</li>
+                                            <li><strong>Desplazamiento de bits:</strong> rotación y corrimiento</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cpu-card">
+                                        <h5>Unidad de Control</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Búsqueda de instrucciones:</strong> obtiene instrucciones de memoria</li>
+                                            <li><strong>Decodificación:</strong> interpreta las instrucciones</li>
+                                            <li><strong>Ejecución:</strong> coordina la realización de operaciones</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Interconexión Interna</h4>
+                                <ul class="features-list">
+                                    <li><strong>Bus de datos:</strong> Transporta valores numéricos entre componentes</li>
+                                    <li><strong>Bus de direcciones:</strong> Especifica ubicación de información en memoria</li>
+                                    <li><strong>Bus de control:</strong> Proporciona sincronización y señales de mando</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 2.2: Estructura de Registros -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>📊 2.2 Estructura de Registros</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>2.2.1 Registros Visibles para el Usuario</h4>
+                                <ul class="features-list">
+                                    <li><strong>Registros de datos:</strong> Solo almacenan datos para procesamiento</li>
+                                    <li><strong>Punteros de segmento:</strong> Almacenan dirección base de segmentos de memoria</li>
+                                    <li><strong>Registros de índice:</strong> Para direccionamiento indexado (autoindexables)</li>
+                                    <li><strong>Stack Pointer (SP):</strong> Apunta al tope de la pila del sistema</li>
+                                    <li><strong>Condition Codes (Banderas):</strong> Indican resultados de operaciones</li>
+                                </ul>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>2.2.2 Registros de Control</h4>
+                                <p>Ubicaciones de almacenamiento de alta velocidad que son visibles solo en modo kernel. Controlan y monitorizan la operación del procesador, siendo esenciales para la estabilidad y seguridad del sistema.</p>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>2.2.3 Registros de Estado</h4>
+                                <div class="cpu-evolution">
+                                    <div class="cpu-card">
+                                        <h5>En Hardware (Banderas - FLAGS)</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Cero:</strong> Resultado igual a 0</li>
+                                            <li><strong>Signo:</strong> Positivo o negativo</li>
+                                            <li><strong>Acarreo:</strong> Existencia de carry/borrow</li>
+                                            <li><strong>Desbordamiento:</strong> Excede capacidad del registro</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cpu-card">
+                                        <h5>En Sistemas Operativos (Estados de Proceso)</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Nuevo:</strong> Proceso recién creado</li>
+                                            <li><strong>Listo:</strong> Esperando asignación de CPU</li>
+                                            <li><strong>Ejecución:</strong> Instrucciones siendo ejecutadas</li>
+                                            <li><strong>Bloqueado:</strong> Esperando evento</li>
+                                            <li><strong>Finalizado:</strong> Proceso terminado</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 2.3: Ciclo de la Instrucción -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🔄 2.3 Ciclo de la Instrucción</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>2.3.1 Ciclo Fetch - Decode - Execute (FDE)</h4>
+                                <div class="cpu-evolution">
+                                    <div class="cpu-card">
+                                        <h5>Fetch (Búsqueda)</h5>
+                                        <ul class="cpu-specs">
+                                            <li>CPU toma dirección del Contador de Programa (PC)</li>
+                                            <li>Guarda en MAR y trae instrucción al MDR</li>
+                                            <li>Actualiza PC a siguiente instrucción</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cpu-card">
+                                        <h5>Decode (Decodificación)</h5>
+                                        <ul class="cpu-specs">
+                                            <li>Interpreta instrucción en MDR</li>
+                                            <li>Identifica operación y operandos</li>
+                                            <li>Genera señales de control</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cpu-card">
+                                        <h5>Execute (Ejecución)</h5>
+                                        <ul class="cpu-specs">
+                                            <li>Realiza operación (acceso memoria, cálculo ALU, E/S)</li>
+                                            <li>Guarda resultado en acumulador u otro registro</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>2.3.2 Segmentación</h4>
+                                <p>Técnica que divide memoria en segmentos, cada uno con tamaño y función específicos. Mejora rendimiento y seguridad, siendo transparente al software en CPUs modernas.</p>
+                                <ul class="features-list">
+                                    <li><strong>Código:</strong> Instrucciones del programa</li>
+                                    <li><strong>Datos:</strong> Variables y constantes</li>
+                                    <li><strong>Extra de datos:</strong> Datos adicionales</li>
+                                    <li><strong>Stack (Pila):</strong> Llamadas a funciones y variables locales</li>
+                                </ul>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>2.3.3 Características y Funciones</h4>
+                                <div class="cpu-evolution">
+                                    <div class="cpu-card">
+                                        <h5>Características</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Secuencial:</strong> fases en orden</li>
+                                            <li><strong>Automático:</strong> continuo mientras sistema encendido</li>
+                                            <li><strong>Controlado:</strong> por unidad de control</li>
+                                            <li><strong>Dependiente:</strong> de memoria principal</li>
+                                            <li><strong>Universal:</strong> aplica en todos los procesadores</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cpu-card">
+                                        <h5>Funciones</h5>
+                                        <ul class="cpu-specs">
+                                            <li>Obtener instrucciones desde memoria</li>
+                                            <li>Interpretar instrucciones</li>
+                                            <li>Ejecutar operaciones</li>
+                                            <li>Actualizar Contador de Programa</li>
+                                            <li>Mantener continuidad de ejecución</li>
+                                            <li>Optimizar recursos del sistema</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 2.4: Modos de Direccionamiento -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🎯 2.4 Modos de Direccionamiento</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Tipos de Direccionamiento</h4>
+                                <table class="comparison-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Modo</th>
+                                            <th>Descripción</th>
+                                            <th>Ejemplo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Implícito</strong></td>
+                                            <td>Dirección conocida por la operación</td>
+                                            <td>RET (sabe dónde retornar)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Inmediato</strong></td>
+                                            <td>Valor directo en la instrucción</td>
+                                            <td>MOV AX, 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Directo</strong></td>
+                                            <td>Referencia directa a dirección</td>
+                                            <td>MOV AX, [1000h]</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Indirecto</strong></td>
+                                            <td>Registro contiene la dirección</td>
+                                            <td>MOV AX, [BX]</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Indexado</strong></td>
+                                            <td>Base + índice para calcular dirección</td>
+                                            <td>MOV AX, [BX+SI]</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Relativo</strong></td>
+                                            <td>Desplazamiento desde dirección actual</td>
+                                            <td>JMP +10</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 2.5: Estudio CPU - Evolución -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🔬 2.5 Estudio CPU - Evolución y Investigación</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Procesadores Históricos</h4>
+                                <div class="cpu-evolution">
+                                    <div class="cpu-card">
+                                        <h5>1. Intel 8086 (1978)</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Arquitectura:</strong> x86 (16 bits)</li>
+                                            <li><strong>Frecuencia:</strong> 5-10 MHz</li>
+                                            <li><strong>Memoria:</strong> 1 MB direccionable</li>
+                                            <li><strong>Pipeline:</strong> 2 etapas (fetch y execute)</li>
+                                            <li><strong>Innovación:</strong> Segmentación de memoria</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cpu-card">
+                                        <h5>2. Intel 80386 (1985)</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Arquitectura:</strong> Primero 32 bits x86</li>
+                                            <li><strong>Memoria virtual:</strong> 64 TB</li>
+                                            <li><strong>Modos:</strong> Real, protegido y virtual</li>
+                                            <li><strong>Innovación:</strong> MMU integrada, multitarea real</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cpu-card">
+                                        <h5>3. Intel Core i3 (3ra Gen - 2012)</h5>
+                                        <ul class="cpu-specs">
+                                            <li><strong>Tecnología:</strong> 22 nm</li>
+                                            <li><strong>Características:</strong> Hyper-Threading, Turbo Boost</li>
+                                            <li><strong>Cache L3:</strong> 3-4 MB</li>
+                                            <li><strong>GPU integrada:</strong> Intel HD Graphics</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Líneas de Investigación Actuales</h4>
+                                <ul class="features-list">
+                                    <li><strong>Balance de carga:</strong> Estático y dinámico para optimización de recursos</li>
+                                    <li><strong>Migración de procesos:</strong> Asignación óptima a procesadores</li>
+                                    <li><strong>Patrones de diseño:</strong> Algoritmos paralelos y concurrentes</li>
+                                    <li><strong>Arquitecturas:</strong> Homogéneas y heterogéneas</li>
+                                    <li><strong>Laboratorios remotos:</strong> Acceso transparente a recursos distribuidos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conceptos Clave -->
+            <div class="key-concepts">
+                <h4>💡 Conceptos Clave para Recordar</h4>
+                <ul>
+                    <li>La organización del CPU sigue el modelo: UC + ALU + Registros + Buses</li>
+                    <li>Los registros son memoria ultrarrápida para diferentes propósitos</li>
+                    <li>El ciclo FDE es fundamental para la ejecución de programas</li>
+                    <li>Los modos de direccionamiento determinan cómo acceder a los datos</li>
+                    <li>La evolución del CPU muestra mejoras en paralelismo y eficiencia</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTopic(header) {
+            const card = header.parentElement;
+            const isActive = card.classList.contains('active');
+            
+            // Close all other cards
+            document.querySelectorAll('.topic-card').forEach(c => {
+                c.classList.remove('active');
+            });
+            
+            // Toggle current card
+            if (!isActive) {
+                card.classList.add('active');
+            }
+        }
+
+        // Add smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animation to cards
+            const cards = document.querySelectorAll('.topic-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.topic-header')) {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

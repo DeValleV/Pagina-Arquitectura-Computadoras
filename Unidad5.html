@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 5 - Procesadores y Memorias | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --info: #4299e1;
+            --purple: #9f7aea;
+            --low-tier: #38a169;
+            --mid-tier: #3182ce;
+            --high-tier: #d69e2e;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .unit-badge {
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .unit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .unit-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unit-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .topic-header:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a3f91);
+        }
+
+        .topic-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8fafc;
+        }
+
+        .topic-card.active .topic-content {
+            max-height: 6000px;
+        }
+
+        .topic-body {
+            padding: 2rem;
+        }
+
+        /* Content Styles */
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section h4 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        /* Processor Tier Styles */
+        .tier-section {
+            margin-bottom: 3rem;
+        }
+
+        .tier-header {
+            background: linear-gradient(135deg, var(--low-tier), #38a169);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 0;
+        }
+
+        .tier-header.mid-tier {
+            background: linear-gradient(135deg, var(--mid-tier), #2c5aa0);
+        }
+
+        .tier-header.high-tier {
+            background: linear-gradient(135deg, var(--high-tier), #b7791f);
+        }
+
+        .tier-header h5 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .tier-header i {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .tier-description {
+            background: rgba(255,255,255,0.9);
+            padding: 1rem 2rem;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-description ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+
+        .tier-description li {
+            padding: 0.3rem 0;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+        }
+
+        .tier-description li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Processor Table */
+        .processor-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .processor-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .processor-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 0.9rem;
+        }
+
+        .processor-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .processor-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .processor-table .processor-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* Memory Types */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .memory-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--info);
+            transition: all 0.3s ease;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .memory-card.ram {
+            border-left-color: var(--info);
+        }
+
+        .memory-card.rom {
+            border-left-color: var(--warning);
+        }
+
+        .memory-card.cache {
+            border-left-color: var(--success);
+        }
+
+        .memory-card.virtual {
+            border-left-color: var(--purple);
+        }
+
+        .memory-card h5 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .memory-card h5 i {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .memory-card.ram h5 { color: var(--info); }
+        .memory-card.rom h5 { color: var(--warning); }
+        .memory-card.cache h5 { color: var(--success); }
+        .memory-card.virtual h5 { color: var(--purple); }
+
+        .memory-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .memory-features li {
+            padding: 0.5rem 0;
+            color: var(--text);
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .memory-features li:last-child {
+            border-bottom: none;
+        }
+
+        .memory-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .cache-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .cache-level {
+            background: rgba(72, 187, 120, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--success);
+        }
+
+        .cache-level h6 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .cache-level ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cache-level li {
+            padding: 0.2rem 0;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .cache-level li strong {
+            color: var(--dark);
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 2px solid var(--primary);
+        }
+
+        .comparison-section h4 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        /* Recommendations */
+        .recommendations {
+            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--success);
+            margin-top: 2rem;
+        }
+
+        .recommendations h4 {
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .rec-card {
+            background: rgba(255,255,255,0.8);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--success);
+        }
+
+        .rec-card h5 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .rec-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rec-card li {
+            padding: 0.3rem 0;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .rec-card li strong {
+            color: var(--dark);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .unit-header h2 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .back-button {
+                text-align: center;
+            }
+
+            .processor-table {
+                font-size: 0.8rem;
+            }
+
+            .processor-table th,
+            .processor-table td {
+                padding: 0.8rem 0.5rem;
+            }
+
+            .memory-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cache-levels {
+                grid-template-columns: 1fr;
+            }
+
+            .rec-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💻 Unidad 5: Procesadores y Memorias</h1>
+            <p class="subtitle">Especificaciones y características de procesadores por gama y tipos de memorias</p>
+        </header>
+
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span style="margin-left: 0.5rem;">Volver al Inicio</span>
+            </a>
+            <div class="unit-badge">Unidad 5</div>
+        </div>
+
+        <div class="main-content">
+            <div class="unit-header">
+                <h2>🎯 Procesadores y Memorias - Especificaciones y Características</h2>
+                <p>Conoce las especificaciones detalladas de procesadores por gama y los diferentes tipos de memorias utilizadas en sistemas de cómputo modernos.</p>
+            </div>
+
+            <div class="topics-grid">
+                <!-- Tema 5.1: Procesadores por Gama -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🎯 5.1 Procesadores por Gama</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <!-- Gama Baja -->
+                            <div class="tier-section">
+                                <div class="tier-header">
+                                    <h5><i class="fas fa-leaf"></i> PROCESADORES DE GAMA BAJA</h5>
+                                </div>
+                                <div class="tier-description">
+                                    <ul>
+                                        <li>Enfocados en eficiencia energética y bajo costo</li>
+                                        <li>Ideal para tareas básicas: oficina, navegación, multimedia</li>
+                                        <li>Menor cantidad de núcleos, frecuencias modestas, caché reducido</li>
+                                    </ul>
+                                </div>
+                                
+                                <table class="processor-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Procesador</th>
+                                            <th>Núcleos/Hilos</th>
+                                            <th>Frecuencia</th>
+                                            <th>Socket</th>
+                                            <th>Caché</th>
+                                            <th>Precio Aprox.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="processor-name">Intel Celeron G5905</td>
+                                            <td>2/2</td>
+                                            <td>3.5 GHz</td>
+                                            <td>LGA1200</td>
+                                            <td>2 niveles</td>
+                                            <td>$1,000-$1,400</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">Intel Pentium Gold G5400</td>
+                                            <td>2/4</td>
+                                            <td>3.7 GHz</td>
+                                            <td>LGA1151</td>
+                                            <td>3 niveles</td>
+                                            <td>$750-$1,477</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">Intel Core i3-12100</td>
+                                            <td>4/8</td>
+                                            <td>3.3-4.3 GHz</td>
+                                            <td>LGA1700</td>
+                                            <td>3 niveles</td>
+                                            <td>$2,200-$2,800</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Athlon 3000G</td>
+                                            <td>2/4</td>
+                                            <td>3.5 GHz</td>
+                                            <td>AM4</td>
+                                            <td>3 niveles</td>
+                                            <td>~$900</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 3 4100</td>
+                                            <td>4/8</td>
+                                            <td>3.8-4.0 GHz</td>
+                                            <td>AM4</td>
+                                            <td>3 niveles</td>
+                                            <td>~$1,600</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Athlon Gold 3150G</td>
+                                            <td>4/4</td>
+                                            <td>Hasta 3.9 GHz</td>
+                                            <td>AM4</td>
+                                            <td>4 MB L3</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Gama Media -->
+                            <div class="tier-section">
+                                <div class="tier-header mid-tier">
+                                    <h5><i class="fas fa-balance-scale"></i> PROCESADORES DE GAMA MEDIA</h5>
+                                </div>
+                                <div class="tier-description">
+                                    <ul>
+                                        <li>Equilibrio entre rendimiento, eficiencia y precio</li>
+                                        <li>6-8 núcleos, 12-16 hilos</li>
+                                        <li>Ideales para gaming 1080p, edición ligera, multitarea</li>
+                                    </ul>
+                                </div>
+                                
+                                <table class="processor-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Procesador</th>
+                                            <th>Núcleos/Hilos</th>
+                                            <th>Frecuencia</th>
+                                            <th>Caché</th>
+                                            <th>Características Especiales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="processor-name">Intel Core i5-13400</td>
+                                            <td>10/16 (6P+4E)</td>
+                                            <td>2.5-4.6 GHz</td>
+                                            <td>20 MB</td>
+                                            <td>Arquitectura híbrida, DDR4/DDR5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">Intel Core i5-12400F</td>
+                                            <td>6/12</td>
+                                            <td>2.5-4.4 GHz</td>
+                                            <td>18 MB</td>
+                                            <td>Sin gráficos integrados</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">Intel Core i5-12600K</td>
+                                            <td>10/16 (6P+4E)</td>
+                                            <td>3.7-4.9 GHz</td>
+                                            <td>20 MB</td>
+                                            <td>Overclocking, PCIe 5.0</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 5 5600</td>
+                                            <td>6/12</td>
+                                            <td>3.5-4.4 GHz</td>
+                                            <td>35 MB</td>
+                                            <td>Zen 3, eficiente</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 5 7600</td>
+                                            <td>6/12</td>
+                                            <td>3.8-5.1 GHz</td>
+                                            <td>38 MB</td>
+                                            <td>Zen 4, DDR5, PCIe 5.0</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 5 9600X</td>
+                                            <td>6/12</td>
+                                            <td>3.9-5.4 GHz</td>
+                                            <td>38 MB</td>
+                                            <td>Zen 5, alta eficiencia</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Gama Alta -->
+                            <div class="tier-section">
+                                <div class="tier-header high-tier">
+                                    <h5><i class="fas fa-crown"></i> PROCESADORES DE GAMA ALTA</h5>
+                                </div>
+                                <div class="tier-description">
+                                    <ul>
+                                        <li>Máximo rendimiento, tecnologías más avanzadas</li>
+                                        <li>Múltiples núcleos, altas frecuencias, caché amplio</li>
+                                        <li>Para gaming 4K, edición profesional, IA, cálculos científicos</li>
+                                    </ul>
+                                </div>
+                                
+                                <table class="processor-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Procesador</th>
+                                            <th>Núcleos/Hilos</th>
+                                            <th>Frecuencia</th>
+                                            <th>Caché</th>
+                                            <th>Tecnologías Clave</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="processor-name">Intel Core i9-14900K</td>
+                                            <td>24/32 (8P+16E)</td>
+                                            <td>3.2-6.0 GHz</td>
+                                            <td>36 MB L3</td>
+                                            <td>14ª gen, máximo rendimiento</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">Intel Core i9-13900K</td>
+                                            <td>24/32 (8P+16E)</td>
+                                            <td>3.0-5.8 GHz</td>
+                                            <td>36 MB L3</td>
+                                            <td>Arquitectura híbrida</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">Intel Core Ultra 9 285K</td>
+                                            <td>24/24 (8P+16E)</td>
+                                            <td>3.7-5.7 GHz</td>
+                                            <td>36 MB L3</td>
+                                            <td>Serie Core Ultra</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">Intel Core i7-14700K</td>
+                                            <td>20/28 (8P+12E)</td>
+                                            <td>3.4-5.6 GHz</td>
+                                            <td>33 MB L3</td>
+                                            <td>Raptor Lake Refresh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 9-7950X3D</td>
+                                            <td>16/32</td>
+                                            <td>4.2-5.7 GHz</td>
+                                            <td>128 MB L3</td>
+                                            <td>3D V-Cache, Zen 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 7-7800X3D</td>
+                                            <td>8/16</td>
+                                            <td>4.2-5.0 GHz</td>
+                                            <td>96 MB L3</td>
+                                            <td>Optimizado para gaming</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 9-9950X3D</td>
+                                            <td>16/32</td>
+                                            <td>4.3-5.7 GHz</td>
+                                            <td>144 MB</td>
+                                            <td>Zen 5, 2ª gen V-Cache</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="processor-name">AMD Ryzen 9-7900X</td>
+                                            <td>12/24</td>
+                                            <td>4.7-5.6 GHz</td>
+                                            <td>76 MB</td>
+                                            <td>Zen 4, alto rendimiento</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 5.2: Tipos de Memorias -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>💾 5.2 Tipos de Memorias</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="memory-grid">
+                                <!-- RAM -->
+                                <div class="memory-card ram">
+                                    <h5><i class="fas fa-memory"></i> MEMORIA RAM (Random Access Memory)</h5>
+                                    <ul class="memory-features">
+                                        <li><strong>Velocidad:</strong> Acceso mucho más rápido que almacenamiento secundario</li>
+                                        <li><strong>Volatilidad:</strong> Datos se pierden al apagar el equipo</li>
+                                        <li><strong>Modular:</strong> Se instala en módulos removibles (DIMM, SODIMM)</li>
+                                        <li><strong>Capacidad:</strong> Se mide en GB, determina capacidad de multitarea</li>
+                                        <li><strong>Tipos:</strong> DDR4, DDR5 con diferentes velocidades</li>
+                                        <li><strong>Función:</strong> Almacenamiento temporal de programas activos</li>
+                                        <li><strong>Acceso:</strong> Aleatorio, cualquier posición en tiempo constante</li>
+                                        <li><strong>Tecnología:</strong> DRAM (Dynamic RAM) más común</li>
+                                        <li><strong>Latencia:</strong> Nanosegundos para acceso</li>
+                                        <li><strong>Ancho de banda:</strong> GB/s de transferencia</li>
+                                        <li><strong>Dual Channel:</strong> Mejora rendimiento con pares de módulos</li>
+                                    </ul>
+                                </div>
+
+                                <!-- ROM -->
+                                <div class="memory-card rom">
+                                    <h5><i class="fas fa-microchip"></i> MEMORIA ROM (Read-Only Memory)</h5>
+                                    <ul class="memory-features">
+                                        <li><strong>No volátil:</strong> Mantiene datos sin energía</li>
+                                        <li><strong>Solo lectura:</strong> Datos permanentes o semipermanentes</li>
+                                        <li><strong>Esencial:</strong> Contiene firmware y instrucciones de arranque</li>
+                                        <li><strong>Ubicua:</strong> Presente en todos los dispositivos electrónicos</li>
+                                        <li><strong>BIOS/UEFI:</strong> Firmware de arranque en computadoras</li>
+                                        <li><strong>Firmware:</strong> Software de control de dispositivos</li>
+                                        <li><strong>Embebido:</strong> Software en electrónica de consumo</li>
+                                        <li><strong>Tipos:</strong> PROM, EPROM, EEPROM, Flash</li>
+                                        <li><strong>Programación:</strong> Una vez o reprogramable</li>
+                                        <li><strong>Velocidad:</strong> Más lenta que RAM</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Cache -->
+                                <div class="memory-card cache">
+                                    <h5><i class="fas fa-tachometer-alt"></i> MEMORIA CACHÉ</h5>
+                                    <p><strong>Función Principal:</strong> Buffer entre CPU y RAM que almacena datos e instrucciones frecuentes, reduce latencia y mejora rendimiento.</p>
+                                    
+                                    <div class="cache-levels">
+                                        <div class="cache-level">
+                                            <h6>L1 (Nivel 1)</h6>
+                                            <ul>
+                                                <li><strong>Velocidad:</strong> Máxima, frecuencia del núcleo</li>
+                                                <li><strong>Tamaño:</strong> 32-128 KB por núcleo</li>
+                                                <li><strong>Ubicación:</strong> Dentro de cada núcleo</li>
+                                                <li><strong>Subdivisiones:</strong> L1i (instrucciones), L1d (datos)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="cache-level">
+                                            <h6>L2 (Nivel 2)</h6>
+                                            <ul>
+                                                <li><strong>Velocidad:</strong> Muy rápida, ligeramente inferior a L1</li>
+                                                <li><strong>Tamaño:</strong> 256 KB - 2 MB por núcleo</li>
+                                                <li><strong>Función:</strong> Ampliación de L1, datos recientes</li>
+                                            </ul>
+                                        </div>
+                                        <div class="cache-level">
+                                            <h6>L3 (Nivel 3)</h6>
+                                            <ul>
+                                                <li><strong>Velocidad:</strong> Rápida, compartida entre núcleos</li>
+                                                <li><strong>Tamaño:</strong> 4-64 MB (hasta 144 MB en modelos especializados)</li>
+                                                <li><strong>Función:</strong> Comunicación entre núcleos, reduce accesos a RAM</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Virtual -->
+                                <div class="memory-card virtual">
+                                    <h5><i class="fas fa-hdd"></i> MEMORIA VIRTUAL</h5>
+                                    <p><strong>Concepto:</strong> Extensión de RAM usando espacio en disco que permite ejecutar más aplicaciones simultáneamente, gestionada automáticamente por el sistema operativo.</p>
+                                    
+                                    <ul class="memory-features">
+                                        <li><strong>Paginación:</strong> División en páginas de memoria</li>
+                                        <li><strong>Swap:</strong> Transferencia páginas RAM↔Disco</li>
+                                        <li><strong>Archivo de paginación:</strong> Área reservada en disco</li>
+                                        <li><strong>Mayor capacidad:</strong> Efectiva de memoria disponible</li>
+                                        <li><strong>Mejor estabilidad:</strong> Del sistema operativo</li>
+                                        <li><strong>Rendimiento reducido:</strong> Disco más lento que RAM</li>
+                                        <li><strong>Desgaste SSD:</strong> Mayor uso de unidades sólidas</li>
+                                        <li><strong>Gestión automática:</strong> Por el sistema operativo</li>
+                                        <li><strong>Transparente:</strong> Para las aplicaciones</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen Comparativo -->
+            <div class="comparison-section">
+                <h4>🎯 Resumen Comparativo de Gamas</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Gama Baja</th>
+                            <th>Gama Media</th>
+                            <th>Gama Alta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Núcleos/Hilos</strong></td>
+                            <td>2-4 / 4-8</td>
+                            <td>6-10 / 12-16</td>
+                            <td>12-24 / 24-32</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Frecuencia</strong></td>
+                            <td>3.3-4.3 GHz</td>
+                            <td>3.5-5.1 GHz</td>
+                            <td>3.0-6.0 GHz</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Caché L3</strong></td>
+                            <td>2-8 MB</td>
+                            <td>18-38 MB</td>
+                            <td>33-144 MB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Uso Principal</strong></td>
+                            <td>Oficina, web</td>
+                            <td>Gaming 1080p, edición</td>
+                            <td>Gaming 4K, profesional</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Precio</strong></td>
+                            <td>$900-$2,800</td>
+                            <td>$2,000-$6,000</td>
+                            <td>$7,000-$20,000+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recomendaciones -->
+            <div class="recommendations">
+                <h4>💡 Recomendaciones de Selección</h4>
+                <div class="rec-grid">
+                    <div class="rec-card">
+                        <h5>Para Oficina/Hogar</h5>
+                        <ul>
+                            <li><strong>CPU:</strong> Intel Core i3, AMD Athlon series</li>
+                            <li><strong>RAM:</strong> 8-16 GB</li>
+                            <li><strong>Almacenamiento:</strong> SSD para sistema operativo</li>
+                        </ul>
+                    </div>
+                    <div class="rec-card">
+                        <h5>Para Gaming/Edición Media</h5>
+                        <ul>
+                            <li><strong>CPU:</strong> Intel Core i5, AMD Ryzen 5</li>
+                            <li><strong>RAM:</strong> 16-32 GB</li>
+                            <li><strong>Importante:</strong> Caché amplio</li>
+                        </ul>
+                    </div>
+                    <div class="rec-card">
+                        <h5>Para Estación de Trabajo/Streaming</h5>
+                        <ul>
+                            <li><strong>CPU:</strong> Intel Core i7/i9, AMD Ryzen 7/9</li>
+                            <li><strong>RAM:</strong> 32-64 GB</li>
+                            <li><strong>Importante:</strong> Múltiples núcleos para multitarea intensiva</li>
+                        </ul>
+                    </div>
+                    <div class="rec-card">
+                        <h5>Para Computación Científica/IA</h5>
+                        <ul>
+                            <li><strong>CPU:</strong> Procesadores con máximo número de núcleos</li>
+                            <li><strong>RAM:</strong> 64+ GB</li>
+                            <li><strong>Importante:</strong> Caché L3 muy amplio (especialmente modelos 3D V-Cache)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTopic(header) {
+            const card = header.parentElement;
+            const isActive = card.classList.contains('active');
+            
+            // Close all other cards
+            document.querySelectorAll('.topic-card').forEach(c => {
+                c.classList.remove('active');
+            });
+            
+            // Toggle current card
+            if (!isActive) {
+                card.classList.add('active');
+            }
+        }
+
+        // Add smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animation to cards
+            const cards = document.querySelectorAll('.topic-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.topic-header')) {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

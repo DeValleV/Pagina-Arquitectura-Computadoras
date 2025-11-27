@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 4 - Computación Paralela | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --info: #4299e1;
+            --purple: #9f7aea;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .unit-badge {
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .unit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .unit-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unit-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .topic-header:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a3f91);
+        }
+
+        .topic-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8fafc;
+        }
+
+        .topic-card.active .topic-content {
+            max-height: 5000px;
+        }
+
+        .topic-body {
+            padding: 2rem;
+        }
+
+        /* Content Styles */
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section h4 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 0.8rem 0;
+            color: var(--text);
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .parallel-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .parallel-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--info);
+            transition: all 0.3s ease;
+        }
+
+        .parallel-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .parallel-card h5 {
+            color: var(--info);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        .parallel-card h5 i {
+            margin-right: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .parallel-specs {
+            list-style: none;
+            padding: 0;
+        }
+
+        .parallel-specs li {
+            padding: 0.3rem 0;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .parallel-specs li strong {
+            color: var(--dark);
+        }
+
+        .law-card {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--warning);
+            margin: 1.5rem 0;
+        }
+
+        .law-card h5 {
+            color: var(--warning);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .formula {
+            background: rgba(255,255,255,0.8);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 1rem 0;
+            border: 2px dashed var(--warning);
+        }
+
+        .analogy-card {
+            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--success);
+            margin: 1.5rem 0;
+        }
+
+        .analogy-card h5 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .memory-architecture {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            border: 2px solid var(--purple);
+        }
+
+        .memory-architecture h5 {
+            color: var(--purple);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .arch-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .arch-card h6 {
+            color: var(--purple);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .advantages {
+            background: rgba(72, 187, 120, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .advantages h6 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .disadvantages {
+            background: rgba(237, 137, 54, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .disadvantages h6 {
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .use-cases {
+            background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--info);
+            margin: 1.5rem 0;
+        }
+
+        .use-cases h5 {
+            color: var(--info);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .use-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .use-item {
+            background: rgba(255,255,255,0.8);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--info);
+        }
+
+        .use-item h6 {
+            color: var(--info);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .use-item p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .conclusions {
+            background: linear-gradient(135deg, #faf5ff, #e9d8fd);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--purple);
+            margin-top: 2rem;
+        }
+
+        .conclusions h4 {
+            color: var(--purple);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .conclusions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .conclusions li {
+            padding: 0.5rem 0;
+            color: var(--text);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .conclusions li::before {
+            content: '🚀';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .unit-header h2 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .back-button {
+                text-align: center;
+            }
+
+            .parallel-types {
+                grid-template-columns: 1fr;
+            }
+
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .use-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Unidad 4: Computación Paralela</h1>
+            <p class="subtitle">Aspectos básicos, tipos de paralelismo, sistemas de memoria compartida y distribuida</p>
+        </header>
+
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span style="margin-left: 0.5rem;">Volver al Inicio</span>
+            </a>
+            <div class="unit-badge">Unidad 4</div>
+        </div>
+
+        <div class="main-content">
+            <div class="unit-header">
+                <h2>🎯 Computación Paralela</h2>
+                <p>Explora los fundamentos de la computación paralela, desde los conceptos básicos hasta las arquitecturas de memoria compartida y distribuida.</p>
+            </div>
+
+            <div class="topics-grid">
+                <!-- Tema 4.1: Aspectos Básicos -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🎯 4.1 Aspectos Básicos de la Computación Paralela</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Definición y Objetivo</h4>
+                                <p><strong>Definición:</strong> Técnica de dividir problemas grandes en subproblemas más pequeños para resolución simultánea por múltiples procesadores.</p>
+                                <ul class="features-list">
+                                    <li><strong>Reducir tiempo de ejecución:</strong> Procesamiento simultáneo acelera resultados</li>
+                                    <li><strong>Resolver problemas complejos:</strong> Inviables con un solo procesador</li>
+                                    <li><strong>Mejorar eficiencia:</strong> Aprovechamiento óptimo de recursos</li>
+                                </ul>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Conceptos Clave</h4>
+                                <div class="parallel-types">
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-tachometer-alt"></i> Speedup</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Definición:</strong> Mejora en velocidad de ejecución</li>
+                                            <li><strong>Fórmula:</strong> Tiempo secuencial / Tiempo paralelo</li>
+                                            <li><strong>Ideal:</strong> Speedup = Número de procesadores</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-chart-line"></i> Eficiencia</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Definición:</strong> Utilización efectiva de procesadores</li>
+                                            <li><strong>Fórmula:</strong> Speedup / Número de procesadores</li>
+                                            <li><strong>Rango:</strong> 0 a 1 (100% ideal)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-balance-scale"></i> Escalabilidad</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Definición:</strong> Capacidad de mantener rendimiento</li>
+                                            <li><strong>Tipos:</strong> Fuerte y débil</li>
+                                            <li><strong>Objetivo:</strong> Rendimiento constante al agregar recursos</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Ley de Amdahl</h4>
+                                <div class="law-card">
+                                    <h5>📊 Limitación del Paralelismo</h5>
+                                    <p>Establece la mejora máxima limitada por la parte no paralelizable del programa.</p>
+                                    <div class="formula">
+                                        <strong>Speedup ≤ 1 / (S + (1-S)/N)</strong><br>
+                                        <small>Donde S = fracción secuencial, N = número de procesadores</small>
+                                    </div>
+                                    <p><strong>Implicación:</strong> Incluso con infinitos procesadores, el speedup está limitado por la parte secuencial.</p>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Analogía: Construcción de Casa</h4>
+                                <div class="analogy-card">
+                                    <h5>🏠 Comparación Práctica</h5>
+                                    <div class="parallel-types">
+                                        <div class="parallel-card">
+                                            <h5>Secuencial</h5>
+                                            <ul class="parallel-specs">
+                                                <li>Una persona hace todos los trabajos</li>
+                                                <li>Cimientos → Paredes → Techo → Instalaciones</li>
+                                                <li>Tiempo total: suma de todas las tareas</li>
+                                            </ul>
+                                        </div>
+                                        <div class="parallel-card">
+                                            <h5>Paralelo</h5>
+                                            <ul class="parallel-specs">
+                                                <li>Equipos especializados trabajan simultáneamente</li>
+                                                <li>Electricistas, plomeros, pintores en paralelo</li>
+                                                <li>Tiempo total: reducido significativamente</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 4.2: Tipos de Computación Paralela -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🔄 4.2 Tipos de Computación Paralela</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Clasificación por Niveles</h4>
+                                <div class="parallel-types">
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-microchip"></i> 1. Paralelismo a Nivel de Bit</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Concepto:</strong> Aumentar tamaño de palabra de datos</li>
+                                            <li><strong>Evolución:</strong> 16→32→64 bits</li>
+                                            <li><strong>Ventaja:</strong> Más datos procesados por ciclo de reloj</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-code"></i> 2. Paralelismo a Nivel de Instrucción (ILP)</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Concepto:</strong> Múltiples instrucciones ejecutadas simultáneamente</li>
+                                            <li><strong>Ejemplos:</strong> Arquitecturas pipeline y superscalar</li>
+                                            <li><strong>Técnicas:</strong> Predicción de saltos, ejecución especulativa</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-stream"></i> 3. Paralelismo a Nivel de Hilo (TLP)</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Concepto:</strong> Múltiples hilos ejecutados concurrentemente</li>
+                                            <li><strong>Ejemplo:</strong> Procesadores multinúcleo</li>
+                                            <li><strong>Beneficio:</strong> Mejor utilización de recursos del CPU</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-tasks"></i> 4. Paralelismo a Nivel de Tarea/Proceso</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Concepto:</strong> Tareas independientes en diferentes procesadores</li>
+                                            <li><strong>Ejemplo:</strong> Servidor web atendiendo múltiples usuarios</li>
+                                            <li><strong>Escalabilidad:</strong> Fácil distribución de carga</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 4.3: Sistemas de Memoria Compartida -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🧠 4.3 Sistemas de Memoria Compartida</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Concepto Fundamental</h4>
+                                <p>Múltiples procesadores comparten un espacio único de direcciones, con acceso a memoria global mediante bus o red de interconexión.</p>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Arquitecturas de Memoria Compartida</h4>
+                                
+                                <div class="memory-architecture">
+                                    <h5>🔄 Arquitectura UMA (Uniform Memory Access)</h5>
+                                    <div class="architecture-grid">
+                                        <div class="arch-card">
+                                            <h6>Características</h6>
+                                            <ul class="parallel-specs">
+                                                <li><strong>Tiempo de acceso:</strong> Igual para todos los procesadores</li>
+                                                <li><strong>Conexión:</strong> Bus compartido o crossbar</li>
+                                                <li><strong>Coherencia:</strong> Automática por hardware</li>
+                                            </ul>
+                                        </div>
+                                        <div class="arch-card">
+                                            <div class="advantages">
+                                                <h6>Ventajas</h6>
+                                                <ul class="parallel-specs">
+                                                    <li>Programación más sencilla</li>
+                                                    <li>Coherencia automática</li>
+                                                    <li>Modelo de programación uniforme</li>
+                                                </ul>
+                                            </div>
+                                            <div class="disadvantages">
+                                                <h6>Desventajas</h6>
+                                                <ul class="parallel-specs">
+                                                    <li>Bus puede ser cuello de botella</li>
+                                                    <li>Escalabilidad limitada</li>
+                                                    <li>Contención en accesos simultáneos</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p><strong>Ejemplos:</strong> Computadores multinúcleo, servidores SMP</p>
+                                </div>
+
+                                <div class="memory-architecture">
+                                    <h5>⚡ Arquitectura NUMA (Non-Uniform Memory Access)</h5>
+                                    <div class="architecture-grid">
+                                        <div class="arch-card">
+                                            <h6>Características</h6>
+                                            <ul class="parallel-specs">
+                                                <li><strong>Tiempo de acceso:</strong> NO uniforme</li>
+                                                <li><strong>Memoria local:</strong> Acceso rápido</li>
+                                                <li><strong>Memoria remota:</strong> Acceso más lento</li>
+                                            </ul>
+                                        </div>
+                                        <div class="arch-card">
+                                            <div class="advantages">
+                                                <h6>Ventajas</h6>
+                                                <ul class="parallel-specs">
+                                                    <li>Mayor escalabilidad que UMA</li>
+                                                    <li>Mejor ancho de banda agregado</li>
+                                                    <li>Localidad de memoria optimizada</li>
+                                                </ul>
+                                            </div>
+                                            <div class="disadvantages">
+                                                <h6>Desventajas</h6>
+                                                <ul class="parallel-specs">
+                                                    <li>Programación debe considerar localidad</li>
+                                                    <li>Complejidad en gestión de memoria</li>
+                                                    <li>Rendimiento variable según acceso</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p><strong>Ejemplos:</strong> Servidores multi-socket gama alta, AMD Epyc, Intel Xeon</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 4.4: Sistemas de Memoria Distribuida -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🌐 4.4 Sistemas de Memoria Distribuida</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Concepto Fundamental</h4>
+                                <p>Cada procesador tiene memoria privada e independiente. No existe espacio global de direcciones. Conexión mediante red de alta velocidad (InfiniBand, Ethernet).</p>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Características Principales</h4>
+                                <div class="parallel-types">
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-envelope"></i> Comunicación</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Método:</strong> Paso de mensajes (Message Passing)</li>
+                                            <li><strong>Protocolos:</strong> MPI, PVM</li>
+                                            <li><strong>Sincronización:</strong> Explícita por programador</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-expand-arrows-alt"></i> Escalabilidad</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Capacidad:</strong> Muy alta (miles de nodos)</li>
+                                            <li><strong>Crecimiento:</strong> Lineal con recursos</li>
+                                            <li><strong>Limitación:</strong> Red de interconexión</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Ventajas y Desventajas</h4>
+                                <div class="architecture-grid">
+                                    <div class="arch-card">
+                                        <div class="advantages">
+                                            <h6>Ventajas</h6>
+                                            <ul class="parallel-specs">
+                                                <li>Sin cuellos de botella de memoria</li>
+                                                <li>Menor costo por nodo</li>
+                                                <li>Escalabilidad masiva</li>
+                                                <li>Tolerancia a fallos natural</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="arch-card">
+                                        <div class="disadvantages">
+                                            <h6>Desventajas</h6>
+                                            <ul class="parallel-specs">
+                                                <li>Programación más compleja</li>
+                                                <li>Latencia de comunicación</li>
+                                                <li>Gestión explícita de datos</li>
+                                                <li>Debugging más difícil</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>15 Usos Principales</h4>
+                                <div class="use-cases">
+                                    <h5>🎯 Aplicaciones de Memoria Distribuida</h5>
+                                    <div class="use-grid">
+                                        <div class="use-item">
+                                            <h6>Caché distribuido</h6>
+                                            <p>Compartir datos entre servidores</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Sesiones de usuario</h6>
+                                            <p>Accesibles desde cualquier servidor</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Big Data</h6>
+                                            <p>Análisis de grandes volúmenes</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Bases de datos en memoria</h6>
+                                            <p>Almacenamiento rápido distribuido</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Computación científica</h6>
+                                            <p>Simulaciones y cálculos paralelos</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Sistema de mensajería</h6>
+                                            <p>Colas distribuidas</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Configuración centralizada</h6>
+                                            <p>Accesible por todos los nodos</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Juegos online</h6>
+                                            <p>Estado de juego compartido</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>E-commerce</h6>
+                                            <p>Carritos e inventario distribuido</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Análisis tiempo real</h6>
+                                            <p>Procesamiento de streams</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Machine Learning</h6>
+                                            <p>Entrenamiento distribuido</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>API caching</h6>
+                                            <p>Respuestas cacheadas entre instancias</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Balanceo de carga stateful</h6>
+                                            <p>Distribución inteligente</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Sistemas de recomendación</h6>
+                                            <p>Perfiles accesibles globalmente</p>
+                                        </div>
+                                        <div class="use-item">
+                                            <h6>Monitorización</h6>
+                                            <p>Métricas compartidas en tiempo real</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 4.5: Casos de Estudio -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🔬 4.5 Casos de Estudio</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Aspectos Básicos</h4>
+                                <div class="parallel-types">
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-calculator"></i> Análisis de Speedup y Eficiencia</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Caso:</strong> Multiplicación de matrices</li>
+                                            <li><strong>Procesadores:</strong> 1, 2, 4, 8, 16</li>
+                                            <li><strong>Métricas:</strong> Tiempo, speedup, eficiencia</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-balance-scale"></i> Balance de Carga</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Caso:</strong> Procesamiento de imágenes</li>
+                                            <li><strong>Problema:</strong> Regiones de diferente complejidad</li>
+                                            <li><strong>Solución:</strong> Distribución dinámica de trabajo</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Tipos de Computación Paralela</h4>
+                                <div class="parallel-types">
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-microchip"></i> ILP</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Procesadores superescalares (Intel, AMD)</li>
+                                            <li><strong>Técnica:</strong> Ejecución fuera de orden</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-server"></i> TLP</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Servidores web con múltiples solicitudes</li>
+                                            <li><strong>Beneficio:</strong> Concurrencia de hilos</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-image"></i> Paralelismo de Datos</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Operaciones en GPUs (filtros de imágenes)</li>
+                                            <li><strong>Característica:</strong> SIMD masivo</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-cloud"></i> Paralelismo de Tareas</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Simulación de clima (viento, temperatura, presión)</li>
+                                            <li><strong>Ventaja:</strong> Tareas independientes</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Memoria Compartida</h4>
+                                <div class="parallel-types">
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-code-branch"></i> Programación con hilos</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Cálculo de π con OpenMP</li>
+                                            <li><strong>Técnica:</strong> Paralelización de bucles</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-lock"></i> Sincronización</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Buffer productor-consumidor con mutex</li>
+                                            <li><strong>Problema:</strong> Condiciones de carrera</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-chart-bar"></i> UMA vs NUMA</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Comparación en servidores AMD Epyc</li>
+                                            <li><strong>Factor:</strong> Localidad de memoria</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Memoria Distribuida</h4>
+                                <div class="parallel-types">
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-network-wired"></i> MPI</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Resolución de ecuaciones en clusters</li>
+                                            <li><strong>Comunicación:</strong> Paso de mensajes</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-globe"></i> Clusters/Grids</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplos:</strong> SETI@home, LHC data processing</li>
+                                            <li><strong>Escala:</strong> Miles de nodos</li>
+                                        </ul>
+                                    </div>
+                                    <div class="parallel-card">
+                                        <h5><i class="fas fa-sitemap"></i> Algoritmos distribuidos</h5>
+                                        <ul class="parallel-specs">
+                                            <li><strong>Ejemplo:</strong> Elección de líder en anillo</li>
+                                            <li><strong>Complejidad:</strong> Consenso distribuido</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusiones -->
+            <div class="conclusions">
+                <h4>💡 Conclusiones Fundamentales</h4>
+                <ul>
+                    <li>La computación paralela es fundamental para ciencia e industria moderna</li>
+                    <li>Permite resolver problemas complejos de manera eficiente y escalable</li>
+                    <li>Memoria Compartida (UMA/NUMA): Ideal para aplicaciones de propósito general y tamaño medio</li>
+                    <li>Memoria Distribuida (Clusters): Base de supercomputación moderna con poder masivo</li>
+                    <li>La elección depende del problema, presupuesto y requisitos de escalabilidad</li>
+                    <li>Tendencias hacia arquitecturas híbridas y especializadas (GPU, TPU)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTopic(header) {
+            const card = header.parentElement;
+            const isActive = card.classList.contains('active');
+            
+            // Close all other cards
+            document.querySelectorAll('.topic-card').forEach(c => {
+                c.classList.remove('active');
+            });
+            
+            // Toggle current card
+            if (!isActive) {
+                card.classList.add('active');
+            }
+        }
+
+        // Add smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animation to cards
+            const cards = document.querySelectorAll('.topic-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.topic-header')) {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
