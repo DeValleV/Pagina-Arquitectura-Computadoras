@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipos Armados | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --info: #4299e1;
+            --low-tier: #38a169;
+            --mid-tier: #3182ce;
+            --high-tier: #d69e2e;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .unit-badge {
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .unit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .unit-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unit-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-header {
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .topic-header.low-tier {
+            background: linear-gradient(135deg, var(--low-tier), #2f855a);
+        }
+
+        .topic-header.mid-tier {
+            background: linear-gradient(135deg, var(--mid-tier), #2c5aa0);
+        }
+
+        .topic-header.high-tier {
+            background: linear-gradient(135deg, var(--high-tier), #b7791f);
+        }
+
+        .topic-header:hover {
+            filter: brightness(1.1);
+        }
+
+        .topic-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8fafc;
+        }
+
+        .topic-card.active .topic-content {
+            max-height: 3000px;
+        }
+
+        .topic-body {
+            padding: 2rem;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: top;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .comparison-table .component-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .comparison-table .price {
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .comparison-table .analysis {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Notes Section */
+        .notes-section {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--warning);
+            margin-top: 2rem;
+        }
+
+        .notes-section h4 {
+            color: var(--warning);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .notes-section p {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .notes-section strong {
+            color: var(--dark);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .unit-header h2 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .back-button {
+                text-align: center;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🖥️ Equipos Armados</h1>
+            <p class="subtitle">Configuraciones completas por gamas de rendimiento y presupuesto</p>
+        </header>
+
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span style="margin-left: 0.5rem;">Volver al Inicio</span>
+            </a>
+            <div class="unit-badge">Equipos Armados</div>
+        </div>
+
+        <div class="main-content">
+            <div class="unit-header">
+                <h2>🎯 Configuraciones de Equipos por Gamas</h2>
+                <p>Selecciones cuidadosamente balanceadas de componentes para diferentes necesidades y presupuestos, con precios de referencia del mercado mexicano.</p>
+            </div>
+
+            <div class="topics-grid">
+                <!-- Gama Baja -->
+                <div class="topic-card">
+                    <div class="topic-header low-tier" onclick="toggleTopic(this)">
+                        <h3>💚 Gama Baja</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Componente</th>
+                                        <th>Económica - Intel</th>
+                                        <th>Balanceada - AMD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="component-name">Procesador</td>
+                                        <td>Intel Core i3-13100</td>
+                                        <td>AMD Ryzen 5 5600G</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Núcleos/Hilos</td>
+                                        <td>4 / 8</td>
+                                        <td>6 / 12</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Frecuencia (Base/Boost)</td>
+                                        <td>3.4 GHz / 4.5 GHz</td>
+                                        <td>3.9 GHz / 4.4 GHz</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">GPU Integrada</td>
+                                        <td>Intel UHD Graphics 730</td>
+                                        <td>Radeon Vega 7</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">TDP</td>
+                                        <td>60W</td>
+                                        <td>65W</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Socket</td>
+                                        <td>LGA 1700</td>
+                                        <td>AM4</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Costo Referencia</td>
+                                        <td class="price">$2,899 MXN</td>
+                                        <td class="price">$2,350 MXN</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Fuente</td>
+                                        <td>CyberPuerta</td>
+                                        <td>CyberPuerta</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Análisis</td>
+                                        <td class="analysis">Ideal para builds económicas. Suficiente para ofimática, navegación y gaming casual.</td>
+                                        <td class="analysis">Rey de los gráficos integrados. Permite gaming casual 1080p sin GPU dedicada.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gama Media -->
+                <div class="topic-card">
+                    <div class="topic-header mid-tier" onclick="toggleTopic(this)">
+                        <h3>💙 Gama Media</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Componente</th>
+                                        <th>Económica - Intel</th>
+                                        <th>Balanceada - AMD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="component-name">Procesador</td>
+                                        <td>Intel Core i5-13400</td>
+                                        <td>AMD Ryzen 5 7600</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Núcleos/Hilos</td>
+                                        <td>10 (6P+4E) / 16</td>
+                                        <td>6 / 12</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Frecuencia (Base/Boost)</td>
+                                        <td>2.5 GHz / 4.6 GHz</td>
+                                        <td>3.8 GHz / 5.1 GHz</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">GPU Integrada</td>
+                                        <td>Intel UHD Graphics 730</td>
+                                        <td>Radeon Graphics (básica)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">TDP</td>
+                                        <td>65W</td>
+                                        <td>65W</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Socket</td>
+                                        <td>LGA 1700</td>
+                                        <td>AM5</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Costo Referencia</td>
+                                        <td class="price">$4,850 MXN</td>
+                                        <td class="price">$4,699 MXN</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Fuente</td>
+                                        <td>DD Tech</td>
+                                        <td>CyberPuerta</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Análisis</td>
+                                        <td class="analysis">Notable mejora en productividad y multitarea. Ideal para gaming 1080p/1440p.</td>
+                                        <td class="analysis">Entrada ideal a AM5. Excelente rendimiento en gaming y eficiencia. Futuro-proof.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gama Alta -->
+                <div class="topic-card">
+                    <div class="topic-header high-tier" onclick="toggleTopic(this)">
+                        <h3>💛 Gama Alta</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Componente</th>
+                                        <th>Económica - Intel</th>
+                                        <th>Balanceada - AMD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="component-name">Procesador</td>
+                                        <td>Intel Core i9-13900K</td>
+                                        <td>AMD Ryzen 9 7950X</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Núcleos/Hilos</td>
+                                        <td>24 (8P+16E) / 32</td>
+                                        <td>16 / 32</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Frecuencia (Base/Boost)</td>
+                                        <td>3.0 GHz / 5.8 GHz</td>
+                                        <td>4.5 GHz / 5.7 GHz</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">GPU Integrada</td>
+                                        <td>Intel UHD Graphics 770</td>
+                                        <td>Radeon Graphics (básica)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">TDP</td>
+                                        <td>125W</td>
+                                        <td>170W</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Socket</td>
+                                        <td>LGA 1700</td>
+                                        <td>AM5</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Costo Referencia</td>
+                                        <td class="price">$11,499 MXN</td>
+                                        <td class="price">$11,999 MXN</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Fuente</td>
+                                        <td>CyberPuerta</td>
+                                        <td>DD Tech</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="component-name">Análisis</td>
+                                        <td class="analysis">Rendimiento extremo en todas las áreas. Para gaming y estaciones de trabajo.</td>
+                                        <td class="analysis">Flagship de AMD. Máximo rendimiento multi-núcleo para profesionales creativos.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nota sobre precios -->
+            <div class="notes-section">
+                <h4>📋 Nota sobre los precios y fuentes</h4>
+                <p><strong>Fuentes Consultadas:</strong> Los precios son una referencia pública obtenida de tiendas en línea mexicanas reconocidas como CyberPuerta y DD Tech.</p>
+                <p><strong>Variación de Precios:</strong> Los precios de los componentes PC fluctúan diariamente debido a la oferta, demanda y tipo de cambio. Se recomienda siempre cotizar directamente en estas u otras tiendas como Digitalife, PCEL o Amazon México al momento de la compra.</p>
+                <p><strong>Disponibilidad:</strong> La disponibilidad de los productos puede cambiar sin previo aviso.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTopic(header) {
+            const card = header.parentElement;
+            const isActive = card.classList.contains('active');
+            
+            // Close all other cards
+            document.querySelectorAll('.topic-card').forEach(c => {
+                c.classList.remove('active');
+            });
+            
+            // Toggle current card
+            if (!isActive) {
+                card.classList.add('active');
+            }
+        }
+
+        // Add smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animation to cards
+            const cards = document.querySelectorAll('.topic-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.topic-header')) {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
