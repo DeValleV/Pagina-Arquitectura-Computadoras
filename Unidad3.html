@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 3 - Selección de Componentes | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --info: #4299e1;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .unit-badge {
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .unit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .unit-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unit-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .topic-header:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a3f91);
+        }
+
+        .topic-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8fafc;
+        }
+
+        .topic-card.active .topic-content {
+            max-height: 4000px;
+        }
+
+        .topic-body {
+            padding: 2rem;
+        }
+
+        /* Content Styles */
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section h4 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 0.8rem 0;
+            color: var(--text);
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .component-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .component-card h5 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        .component-card h5 i {
+            margin-right: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .component-specs {
+            list-style: none;
+            padding: 0;
+        }
+
+        .component-specs li {
+            padding: 0.3rem 0;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .component-specs li strong {
+            color: var(--dark);
+        }
+
+        .power-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .power-table th {
+            background: linear-gradient(135deg, var(--warning), #f6ad55);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .power-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .power-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .power-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .environment-card {
+            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--info);
+            margin: 1.5rem 0;
+        }
+
+        .environment-card h5 {
+            color: var(--info);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .environment-card .services {
+            margin-bottom: 1rem;
+        }
+
+        .environment-card .services strong {
+            color: var(--dark);
+        }
+
+        .environment-card .requirements {
+            background: rgba(255,255,255,0.7);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .environment-card .requirements h6 {
+            color: var(--info);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--warning);
+            margin-top: 2rem;
+        }
+
+        .tips-section h4 {
+            color: var(--warning);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tips-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-section li {
+            padding: 0.5rem 0;
+            color: var(--text);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .tips-section li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+        }
+
+        .dma-diagram {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px dashed var(--primary);
+        }
+
+        .dma-diagram h6 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .dma-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .dma-type {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dma-type h6 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .dma-type p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .unit-header h2 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .back-button {
+                text-align: center;
+            }
+
+            .component-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .power-table {
+                font-size: 0.9rem;
+            }
+
+            .power-table th,
+            .power-table td {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💻 Unidad 3: Selección de Componentes para Ensamblaje</h1>
+            <p class="subtitle">Chipset, componentes de hardware, almacenamiento, fuentes de alimentación y ambientes de servicio</p>
+        </header>
+
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span style="margin-left: 0.5rem;">Volver al Inicio</span>
+            </a>
+            <div class="unit-badge">Unidad 3</div>
+        </div>
+
+        <div class="main-content">
+            <div class="unit-header">
+                <h2>🎯 Selección de Componentes para Ensamblaje de Equipo</h2>
+                <p>Aprende sobre los componentes esenciales para el ensamblaje de equipos de cómputo, desde el chipset hasta los ambientes de servicio especializados.</p>
+            </div>
+
+            <div class="topics-grid">
+                <!-- Tema 3.1: Chipset -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🎯 3.1 Chipset - El Centro de Comunicaciones</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Definición y Funcionamiento</h4>
+                                <p><strong>Definición:</strong> Conjunto de circuitos integrados que actúa como centro de comunicaciones de la placa base, conectando el procesador con memoria, tarjetas de expansión y puertos.</p>
+                                <p><strong>Funcionamiento:</strong> Gestiona el flujo de datos entre el procesador y demás dispositivos, opera a través de diversos buses y permite que la placa base funcione como eje central del ordenador.</p>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Evolución Histórica</h4>
+                                <div class="component-grid">
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-microchip"></i> Puente Norte</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Función:</strong> Gestionaba componentes de alta velocidad</li>
+                                            <li><strong>Componentes:</strong> CPU, RAM, GPU</li>
+                                            <li><strong>Velocidad:</strong> Alta frecuencia de operación</li>
+                                        </ul>
+                                    </div>
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-microchip"></i> Puente Sur</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Función:</strong> Gestionaba periféricos de menor velocidad</li>
+                                            <li><strong>Componentes:</strong> Discos, USB, PCI</li>
+                                            <li><strong>Velocidad:</strong> Menor frecuencia de operación</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>⚡ 3.1.1 CPU - Unidad Central de Procesamiento</h4>
+                                <div class="component-card">
+                                    <h5><i class="fas fa-cpu"></i> Evolución del CPU</h5>
+                                    <ul class="component-specs">
+                                        <li><strong>Evolución:</strong> De procesadores simples a múltiples núcleos</li>
+                                        <li><strong>Integración:</strong> Componentes en SoC (Sistema en un Chip)</li>
+                                        <li><strong>Beneficios:</strong> Mayor potencia, eficiencia y reducción de costos</li>
+                                        <li><strong>Componentes Internos:</strong> ALU, Unidad de Control, Registros, Cache</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>🔌 3.1.2 Controlador del Bus</h4>
+                                <ul class="features-list">
+                                    <li><strong>Gestiona frecuencia de funcionamiento:</strong> Controla la velocidad de operación</li>
+                                    <li><strong>Controla señales:</strong> Sincronismo, temporización y control</li>
+                                    <li><strong>Ubicación:</strong> Chip de la placa base</li>
+                                    <li><strong>Vía de transmisión:</strong> Para comunicaciones internas/externas</li>
+                                    <li><strong>Dispositivo de transferencia:</strong> No almacena información permanentemente</li>
+                                </ul>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>🖱️ 3.1.3 Dispositivos de Entrada/Salida</h4>
+                                <div class="component-grid">
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-keyboard"></i> Dispositivos de Entrada</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Teclado:</strong> Mecánico/membrana, durabilidad, precisión (Ej: Redragon Kumara)</li>
+                                            <li><strong>Ratón:</strong> Sensor óptico de alta precisión (Ej: Logitech G203, 8000 DPI)</li>
+                                            <li><strong>Opcionales:</strong> Lector huellas, tableta digitalizadora, controles de juego</li>
+                                        </ul>
+                                    </div>
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-desktop"></i> Dispositivos de Salida</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Monitor:</strong> Alta tasa de refresco (Ej: ASUS VG24VQ, 165Hz)</li>
+                                            <li><strong>Audio:</strong> Altavoces o audífonos (Ej: Logitech Z313, 2.1 canales)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-wifi"></i> Conectividad</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Puertos:</strong> USB 2.0/3.2, HDMI, DisplayPort, RJ-45, audio HD</li>
+                                            <li><strong>Inalámbrica:</strong> Wi-Fi 6, Bluetooth 5.3 (velocidad y estabilidad)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>🔄 3.1.4-3.1.5 Controladores y DMA</h4>
+                                <div class="component-card">
+                                    <h5><i class="fas fa-exclamation-triangle"></i> Controlador de Interrupciones</h5>
+                                    <ul class="component-specs">
+                                        <li>Gestiona prioridades de atención a dispositivos</li>
+                                        <li>Optimiza el uso del CPU</li>
+                                    </ul>
+                                </div>
+
+                                <div class="dma-diagram">
+                                    <h6>DMA (Acceso Directo a Memoria)</h6>
+                                    <p>Permite a los dispositivos acceder directamente a la memoria sin intervención del CPU, mejorando significativamente el rendimiento del sistema.</p>
+                                    
+                                    <div class="dma-types">
+                                        <div class="dma-type">
+                                            <h6>Por Ráfaga</h6>
+                                            <p>Bloque completo en una operación</p>
+                                        </div>
+                                        <div class="dma-type">
+                                            <h6>Por Ciclo Robado</h6>
+                                            <p>Breves intervalos, CPU sigue ejecutando</p>
+                                        </div>
+                                        <div class="dma-type">
+                                            <h6>Transparente</h6>
+                                            <p>Solo cuando CPU no usa el bus</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>⏰ 3.1.6 Circuitos de Temporización</h4>
+                                <ul class="features-list">
+                                    <li><strong>Medir intervalos:</strong> Entre eventos del sistema</li>
+                                    <li><strong>Generar pausas:</strong> Controladas y precisas</li>
+                                    <li><strong>Mantener hora y fecha:</strong> Del sistema operativo</li>
+                                    <li><strong>Controlar acciones:</strong> Inicio y detención de procesos</li>
+                                </ul>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>🎮 3.1.7 Controladores de Video</h4>
+                                <div class="component-card">
+                                    <h5><i class="fas fa-video"></i> Función Principal</h5>
+                                    <ul class="component-specs">
+                                        <li><strong>Intermediarios:</strong> Entre SO y hardware de video</li>
+                                        <li><strong>Traducción:</strong> Instrucciones del sistema para generar imágenes</li>
+                                        <li><strong>Gestión:</strong> Comunicación eficiente software/hardware</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 3.2: Almacenamiento -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>💾 3.2 Almacenamiento</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Memoria RAM (Primaria/Volátil)</h4>
+                                <div class="component-card">
+                                    <h5><i class="fas fa-memory"></i> Características de la RAM</h5>
+                                    <ul class="component-specs">
+                                        <li><strong>Función:</strong> Almacenamiento temporal de programas en uso</li>
+                                        <li><strong>Velocidad:</strong> Acceso casi instantáneo para CPU</li>
+                                        <li><strong>Volatilidad:</strong> Pierde información al apagar el equipo</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Almacenamiento Permanente (Secundario/No Volátil)</h4>
+                                <div class="component-grid">
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-hdd"></i> SSD (Unidades Estado Sólido)</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Velocidad:</strong> Alta velocidad de transferencia</li>
+                                            <li><strong>Durabilidad:</strong> Sin partes móviles</li>
+                                            <li><strong>Optimización:</strong> Uso de DMA para mejor rendimiento</li>
+                                        </ul>
+                                    </div>
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-database"></i> HDD (Discos Duros Mecánicos)</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Tecnología:</strong> Platos magnéticos y cabezales</li>
+                                            <li><strong>Velocidad:</strong> Más lentos que SSD</li>
+                                            <li><strong>DMA:</strong> También utilizan acceso directo a memoria</li>
+                                        </ul>
+                                    </div>
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-usb"></i> Unidades Externas</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>Conexión:</strong> USB 3.2, Thunderbolt, eSATA</li>
+                                            <li><strong>Propósito:</strong> Almacenamiento adicional o backups</li>
+                                            <li><strong>Control:</strong> Controladores gestionan operaciones DMA</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 3.3: Fuentes de Alimentación -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🔌 3.3 Fuentes de Alimentación (PSU)</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Función Principal</h4>
+                                <p>Convertir corriente alterna (AC, 110V/220V) a corriente continua (DC) para alimentar todos los componentes internos del equipo.</p>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Características Clave</h4>
+                                <table class="power-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo de Uso</th>
+                                            <th>Potencia Recomendada</th>
+                                            <th>Aplicación</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Básico</strong></td>
+                                            <td>300W - 400W</td>
+                                            <td>Equipos de oficina</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Gama Media</strong></td>
+                                            <td>550W - 650W</td>
+                                            <td>Gaming y multimedia</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Alto Rendimiento</strong></td>
+                                            <td>750W - 1000W+</td>
+                                            <td>Estaciones de trabajo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Eficiencia (Certificación 80 Plus)</h4>
+                                <div class="component-card">
+                                    <h5><i class="fas fa-leaf"></i> Beneficios de Alta Eficiencia</h5>
+                                    <ul class="component-specs">
+                                        <li><strong>Eficiencia:</strong> Mínimo 80% en conversión AC/DC</li>
+                                        <li><strong>Menos calor:</strong> Menor generación de calor residual</li>
+                                        <li><strong>Menos ruido:</strong> Ventiladores funcionan más lento</li>
+                                        <li><strong>Ahorro energético:</strong> Menor consumo eléctrico</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Formato y Modularidad</h4>
+                                <div class="component-grid">
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-expand-arrows-alt"></i> Factor de Forma</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>ATX:</strong> Estándar para la mayoría de equipos</li>
+                                            <li><strong>SFX/SFX-L:</strong> Computadoras compactas (Mini-ITX)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="component-card">
+                                        <h5><i class="fas fa-plug"></i> Gestión de Cables</h5>
+                                        <ul class="component-specs">
+                                            <li><strong>No Modular:</strong> Todos cables fijos (económico)</li>
+                                            <li><strong>Semi-Modular:</strong> Cables esenciales fijos, otros opcionales</li>
+                                            <li><strong>Totalmente Modular:</strong> Solo cables necesarios (mejor gestión)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 3.4: Ambientes de Servicio -->
+                <div class="topic-card">
+                    <div class="topic-header" onclick="toggleTopic(this)">
+                        <h3>🏢 3.4 Ambientes de Servicio</h3>
+                        <i class="fas fa-chevron-down topic-icon"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Definición</h4>
+                                <p>Entornos tecnológicos donde sistemas brindan soporte a actividades humanas y empresariales, combinando hardware, software, redes y bases de datos.</p>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Ambientes Específicos</h4>
+                                
+                                <div class="environment-card">
+                                    <h5><i class="fas fa-building"></i> Negocios</h5>
+                                    <div class="services">
+                                        <strong>Servicios:</strong> ERP, CRM, contabilidad, correo corporativo
+                                    </div>
+                                    <div class="requirements">
+                                        <h6>Requisitos:</h6>
+                                        <ul class="component-specs">
+                                            <li>Fiabilidad y consistencia de datos</li>
+                                            <li>Seguridad centralizada</li>
+                                            <li>Procesamiento OLTP (operaciones lectura/escritura)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="environment-card">
+                                    <h5><i class="fas fa-industry"></i> Industria</h5>
+                                    <div class="services">
+                                        <strong>Servicios:</strong> Control maquinaria, monitoreo sensores, SCADA, logística
+                                    </div>
+                                    <div class="requirements">
+                                        <h6>Requisitos:</h6>
+                                        <ul class="component-specs">
+                                            <li>Tiempo real (respuesta en milisegundos)</li>
+                                            <li>Robustez y durabilidad (ambientes hostiles)</li>
+                                            <li>Alta disponibilidad con redundancia</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="environment-card">
+                                    <h5><i class="fas fa-shopping-cart"></i> Comercio Electrónico</h5>
+                                    <div class="services">
+                                        <strong>Servicios:</strong> Tiendas online, carritos compra, pasarelas pago
+                                    </div>
+                                    <div class="requirements">
+                                        <h6>Requisitos:</h6>
+                                        <ul class="component-specs">
+                                            <li>Escalabilidad masiva (picos de tráfico)</li>
+                                            <li>Alta disponibilidad 24/7</li>
+                                            <li>Baja latencia (carga rápida)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consejos para Selección -->
+            <div class="tips-section">
+                <h4>🎯 Consejos para Selección de Componentes</h4>
+                <ul>
+                    <li>Identificar el propósito del equipo (oficina, gaming, servidor)</li>
+                    <li>Considerar compatibilidad entre componentes</li>
+                    <li>Balancear el presupuesto según necesidades reales</li>
+                    <li>Planificar para futuras actualizaciones</li>
+                    <li>Verificar certificaciones de eficiencia y calidad</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTopic(header) {
+            const card = header.parentElement;
+            const isActive = card.classList.contains('active');
+            
+            // Close all other cards
+            document.querySelectorAll('.topic-card').forEach(c => {
+                c.classList.remove('active');
+            });
+            
+            // Toggle current card
+            if (!isActive) {
+                card.classList.add('active');
+            }
+        }
+
+        // Add smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animation to cards
+            const cards = document.querySelectorAll('.topic-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.topic-header')) {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 1 - Modelos de Arquitecturas | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .unit-badge {
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .unit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .unit-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unit-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .topic-header:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a3f91);
+        }
+
+        .topic-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8fafc;
+        }
+
+        .topic-card.active .topic-content {
+            max-height: 2000px;
+        }
+
+        .topic-body {
+            padding: 2rem;
+        }
+
+        /* Content Styles */
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section h4 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 0.8rem 0;
+            color: var(--text);
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--primary);
+        }
+
+        .comparison-card h5 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-card li {
+            padding: 0.3rem 0;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .comparison-card li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Diagram Styles */
+        .diagram {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .diagram-placeholder {
+            background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+            padding: 3rem;
+            border-radius: 8px;
+            border: 2px dashed #cbd5e0;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+
+        footer p {
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .main-content {
+                padding: 2rem;
+            }
+            
+            .unit-header h2 {
+                font-size: 2rem;
+            }
+            
+            .topic-header {
+                padding: 1.2rem 1.5rem;
+            }
+            
+            .topic-header h3 {
+                font-size: 1.2rem;
+            }
+            
+            .topic-body {
+                padding: 1.5rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .unit-header h2 {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Arquitectura de Computadoras</h1>
+            <p class="subtitle">Unidad 1: Modelos de Arquitecturas de Cómputo</p>
+        </header>
+
+        <!-- Navigation -->
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                &nbsp; Volver al Inicio
+            </a>
+            <div class="unit-badge">
+                <i class="fas fa-microchip"></i>
+                &nbsp; Unidad 1
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="unit-header">
+                <h2>Modelos de Arquitecturas de Cómputo</h2>
+                <p>Explora la evolución de las arquitecturas computacionales desde los modelos clásicos secuenciales hasta los sistemas modernos de procesamiento paralelo y distribuido.</p>
+            </div>
+
+            <div class="topics-grid">
+                <!-- Topic 1.1 -->
+                <div class="topic-card" onclick="toggleTopic(this)">
+                    <div class="topic-header">
+                        <h3>1.1 Modelos de Arquitectura</h3>
+                        <span class="topic-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Arquitecturas Clásicas</h4>
+                                <p>Son las más antiguas y tradicionales. Se basan en un solo procesador que ejecuta las instrucciones de manera secuencial.</p>
+                                
+                                <div class="features-list">
+                                    <li><strong>Procesador único:</strong> Un solo procesador central (CPU)</li>
+                                    <li><strong>Ciclo de instrucción clásico:</strong> Buscar → Decodificar → Ejecutar → Almacenar</li>
+                                    <li><strong>Sin paralelismo:</strong> Una instrucción debe terminar antes de iniciar la siguiente</li>
+                                    <li><strong>Ejemplo:</strong> Arquitectura Von Neumann (datos e instrucciones comparten memoria)</li>
+                                    <li><strong>Ventaja:</strong> Simplicidad de diseño</li>
+                                    <li><strong>Desventaja:</strong> Lento al no poder ejecutar varias instrucciones a la vez</li>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Arquitecturas Segmentadas (Pipeline)</h4>
+                                <p>Las instrucciones se dividen en etapas y varias pueden ejecutarse de forma superpuesta, como en una línea de producción.</p>
+                                
+                                <div class="features-list">
+                                    <li><strong>Técnica de pipeline:</strong> Múltiples etapas de ejecución</li>
+                                    <li><strong>Etapas típicas:</strong> Buscar → Decodificar → Ejecutar → Memoria → Escribir</li>
+                                    <li><strong>Ventaja:</strong> Aumenta la velocidad mediante ejecución superpuesta</li>
+                                    <li><strong>Desventaja:</strong> Problemas de "atascos" (hazards) por dependencias</li>
+                                    <li><strong>Ejemplos:</strong> Procesadores RISC (ARM, MIPS), Intel y AMD modernos</li>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Arquitecturas Multiprocesamiento</h4>
+                                <p>Se usan varios procesadores o núcleos que trabajan en paralelo para resolver múltiples tareas.</p>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>SMP (Multiprocesamiento Simétrico)</h5>
+                                        <ul>
+                                            <li>Todos los procesadores comparten la misma memoria</li>
+                                            <li>Acceso uniforme a memoria</li>
+                                            <li>Comunicación vía memoria compartida</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>MPP (Masivamente Paralelo)</h5>
+                                        <ul>
+                                            <li>Cada procesador tiene su propia memoria</li>
+                                            <li>Comunicación vía paso de mensajes</li>
+                                            <li>Alta escalabilidad</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="features-list">
+                                    <li><strong>Ventaja:</strong> Mayor rendimiento y capacidad de procesamiento</li>
+                                    <li><strong>Desventaja:</strong> Complejidad en sincronización y programación</li>
+                                    <li><strong>Ejemplos:</strong> Procesadores multinúcleo (Intel i7, Ryzen), supercomputadoras</li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 1.2 -->
+                <div class="topic-card" onclick="toggleTopic(this)">
+                    <div class="topic-header">
+                        <h3>1.2 Unidad Central de Procesamiento (CPU)</h3>
+                        <span class="topic-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>¿Qué es la CPU?</h4>
+                                <p>El cerebro del sistema computacional, responsable de ejecutar instrucciones y procesar datos. Es el componente básico de todo dispositivo que procesa datos y realiza cálculos matemáticos.</p>
+                                
+                                <div class="features-list">
+                                    <li><strong>Función principal:</strong> Recibir e interpretar datos, ejecutar secuencias de instrucciones</li>
+                                    <li><strong>Operaciones:</strong> Aritméticas, lógicas y de control</li>
+                                    <li><strong>Control:</strong> Del buen funcionamiento de cada componente del sistema</li>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Componentes Principales de la CPU</h4>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>ALU (Unidad Aritmético Lógica)</h5>
+                                        <ul>
+                                            <li>Operaciones matemáticas</li>
+                                            <li>Operaciones lógicas (AND, OR, NOT)</li>
+                                            <li>Desplazamiento de bits</li>
+                                            <li>Parte "calculadora" de la computadora</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Unidad de Control</h5>
+                                        <ul>
+                                            <li>Coordina actividades de la CPU</li>
+                                            <li>Gestiona flujo de datos</li>
+                                            <li>Controla ejecución de instrucciones</li>
+                                            <li>Dirige tráfico de información</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Registros</h5>
+                                        <ul>
+                                            <li>Memoria ultrarrápida interna</li>
+                                            <li>Almacenamiento temporal</li>
+                                            <li>Diferentes tipos según función</li>
+                                            <li>Facilitan operaciones del CPU</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Buses del Sistema</h4>
+                                <p>Conjunto de cables que permiten la comunicación entre dispositivos hardware.</p>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>Bus de Datos</h5>
+                                        <ul>
+                                            <li>Transporta datos entre componentes</li>
+                                            <li>Bidireccional</li>
+                                            <li>Ancho determina capacidad</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Bus de Direcciones</h5>
+                                        <ul>
+                                            <li>Indica dirección de memoria</li>
+                                            <li>Unidireccional</li>
+                                            <li>Determina memoria direccionable</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Bus de Control</h5>
+                                        <ul>
+                                            <li>Goberna acceso a buses</li>
+                                            <li>Señales de sincronización</li>
+                                            <li>Evita colisiones</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Memoria Principal (RAM)</h4>
+                                <div class="features-list">
+                                    <li><strong>Función:</strong> Almacenar temporalmente datos y programas en uso</li>
+                                    <li><strong>Características:</strong> Volátil, alta velocidad, capacidad en GB</li>
+                                    <li><strong>Ejemplo:</strong> Cuando abres un navegador, las páginas se cargan en RAM</li>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Memoria Caché</h4>
+                                <div class="features-list">
+                                    <li><strong>Función:</strong> Acelerar acceso a datos frecuentes</li>
+                                    <li><strong>Niveles:</strong> L1 (más rápida), L2, L3 (compartida)</li>
+                                    <li><strong>Características:</strong> Muy rápida, poca capacidad, costosa</li>
+                                    <li><strong>Analogía:</strong> Apuntes frente al estudiante vs libros en mochila</li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 1.3 -->
+                <div class="topic-card" onclick="toggleTopic(this)">
+                    <div class="topic-header">
+                        <h3>1.3 Sistemas de Entrada/Salida (E/S)</h3>
+                        <span class="topic-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Dispositivos de E/S</h4>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>Dispositivos de Entrada</h5>
+                                        <ul>
+                                            <li>Teclado</li>
+                                            <li>Ratón</li>
+                                            <li>Micrófono</li>
+                                            <li>Escáner</li>
+                                            <li>Cámara Web</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Dispositivos de Salida</h5>
+                                        <ul>
+                                            <li>Monitor</li>
+                                            <li>Impresora</li>
+                                            <li>Altavoces</li>
+                                            <li>Proyectores</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Dispositivos Mixtos</h5>
+                                        <ul>
+                                            <li>Pantallas táctiles</li>
+                                            <li>Unidades de almacenamiento</li>
+                                            <li>Tarjetas de red</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Métodos de Transferencia</h4>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>E/S Programada</h5>
+                                        <ul>
+                                            <li>CPU verifica constantemente</li>
+                                            <li>Muy ineficiente</li>
+                                            <li>Consume tiempo de CPU</li>
+                                            <li>Espera activa</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>E/S por Interrupciones</h5>
+                                        <ul>
+                                            <li>Dispositivo notifica a CPU</li>
+                                            <li>CPU puede hacer otras tareas</li>
+                                            <li>Más eficiente</li>
+                                            <li>Rutinas de servicio</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>DMA (Acceso Directo)</h5>
+                                        <ul>
+                                            <li>Transferencia directa a memoria</li>
+                                            <li>Sin intervención de CPU</li>
+                                            <li>Máxima eficiencia</li>
+                                            <li>Para grandes volúmenes</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 1.4 - Componentes -->
+                <div class="topic-card" onclick="toggleTopic(this)">
+                    <div class="topic-header">
+                        <h3>1.4 Componentes</h3>
+                        <span class="topic-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-body">
+                            <div class="content-section">
+                                <h4>Tarjeta Madre A7V8X</h4>
+                                <p>Ejemplo de placa base de principios de los 2000s con características típicas de la época.</p>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>Socket del Procesador</h5>
+                                        <ul>
+                                            <li>Socket 478 (Intel Pentium 4 / Celeron)</li>
+                                            <li>Socket 754/939 (AMD Athlon 64)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Slots de Expansión</h5>
+                                        <ul>
+                                            <li>3 puertos PCI blancos (tarjetas de sonido, red, etc.)</li>
+                                            <li>1 puerto AGP negro (tarjeta de video dedicada)</li>
+                                            <li>Típico de placas de principios de los 2000</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Memoria RAM</h5>
+                                        <ul>
+                                            <li>2 ranuras DDR SDRAM (DIMM)</li>
+                                            <li>No DDR2/DDR3</li>
+                                            <li>Tecnología de memoria de la época</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>Conectores de Almacenamiento</h5>
+                                        <ul>
+                                            <li>1 puerto IDE azul (discos duros y lectoras antiguas)</li>
+                                            <li>1 puerto IDE negro (probablemente secundario)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Puertos Traseros</h5>
+                                        <ul>
+                                            <li>VGA azul (salida de video integrada)</li>
+                                            <li>2 puertos de red (Ethernet, doble RJ45)</li>
+                                            <li>Varias salidas USB (probablemente USB 2.0)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Chipset y Alimentación</h5>
+                                        <ul>
+                                            <li>Disipador de aluminio cuadrado (chipsets VIA o SiS)</li>
+                                            <li>Conector ATX 20 pines</li>
+                                            <li>Conector adicional de 4 pines (ATX12V)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Gabinete</h4>
+                                <p>Gabinete COMPAQ serie Presario (aprox. 2002–2005) con placas madre microATX.</p>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>Características Generales</h5>
+                                        <ul>
+                                            <li>Marca: COMPAQ serie Presario</li>
+                                            <li>Época: 2002–2005</li>
+                                            <li>Formato: microATX</li>
+                                            <li>Chipsets: VIA o SiS</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Bahías de Almacenamiento</h5>
+                                        <ul>
+                                            <li>Una bahía de 3.5" (para disco duro IDE)</li>
+                                            <li>Una bahía de 5.25" (para lectora de CD/DVD)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Conectores Frontales</h5>
+                                        <ul>
+                                            <li>USB 2.0 frontales (cable blanco)</li>
+                                            <li>Audio frontal (micrófono y audífonos)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="features-list">
+                                    <li><strong>Fuente de poder:</strong> Montaje ATX estándar, probablemente de 250W a 300W</li>
+                                    <li><strong>Diseño:</strong> Típico de PCs de escritorio de la época</li>
+                                    <li><strong>Compatibilidad:</strong> Diseñado para componentes de principios de los 2000s</li>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Fuente de Poder</h4>
+                                <p>Fuente de alimentación ATX estándar con conectores típicos de la época.</p>
+                                
+                                <div class="comparison-grid">
+                                    <div class="comparison-card">
+                                        <h5>Formato y Conectores</h5>
+                                        <ul>
+                                            <li>ATX estándar (compatible con gabinetes ATX/microATX)</li>
+                                            <li>ATX principal de 20 pines (para tarjeta madre)</li>
+                                            <li>ATX12V de 4 pines (energía al CPU)</li>
+                                            <li>Molex de 4 pines (discos duros IDE, lectoras CD/DVD)</li>
+                                            <li>Conector FDD (floppy)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Voltajes de Salida</h5>
+                                        <ul>
+                                            <li><strong>+3.3V:</strong> Para memoria y chipset</li>
+                                            <li><strong>+5V:</strong> Para discos y lógica de la placa</li>
+                                            <li><strong>+12V:</strong> Para CPU, ventiladores y disco duro</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comparison-card">
+                                        <h5>Protecciones</h5>
+                                        <ul>
+                                            <li>Protección contra sobrecarga</li>
+                                            <li>Protección contra cortocircuito</li>
+                                            <li>Sistemas de seguridad básicos</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 Arquitectura de Computadoras - Unidad 1: Modelos de Arquitecturas</p>
+        </footer>
+    </div>
+
+    <script>
+        // Función para expandir/contraer temas
+        function toggleTopic(card) {
+            // Cerrar otros temas abiertos
+            document.querySelectorAll('.topic-card.active').forEach(activeCard => {
+                if (activeCard !== card) {
+                    activeCard.classList.remove('active');
+                }
+            });
+            
+            // Toggle el tema actual
+            card.classList.toggle('active');
+        }
+
+        // Abrir el primer tema por defecto
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstTopic = document.querySelector('.topic-card');
+            if (firstTopic) {
+                firstTopic.classList.add('active');
+            }
+        });
+
+        // Efectos de scroll suave
+        document.querySelectorAll('.topic-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const card = this.parentElement;
+                if (card.classList.contains('active')) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
