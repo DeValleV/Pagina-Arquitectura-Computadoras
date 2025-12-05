@@ -658,243 +658,164 @@
             </div>
 
             <div class="topics-grid">
-                <!-- Tema 5.1: Procesadores por Gama -->
+                <!-- Tema 5.1: Clasificación de Procesadores por Gama -->
                 <div class="topic-card">
                     <div class="topic-header" onclick="toggleTopic(this)">
-                        <h3>🎯 5.1 Procesadores por Gama</h3>
+                        <h3>🎯 5.1 Clasificación de Procesadores por Gama</h3>
                         <i class="fas fa-chevron-down topic-icon"></i>
                     </div>
                     <div class="topic-content">
                         <div class="topic-body">
-                            <!-- Gama Baja -->
-                            <div class="tier-section">
-                                <div class="tier-header">
-                                    <h5><i class="fas fa-leaf"></i> PROCESADORES DE GAMA BAJA</h5>
-                                </div>
-                                <div class="tier-description">
-                                    <ul>
-                                        <li>Enfocados en eficiencia energética y bajo costo</li>
-                                        <li>Ideal para tareas básicas: oficina, navegación, multimedia</li>
-                                        <li>Menor cantidad de núcleos, frecuencias modestas, caché reducido</li>
-                                    </ul>
-                                </div>
-                                
-                                <table class="processor-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Procesador</th>
-                                            <th>Núcleos/Hilos</th>
-                                            <th>Frecuencia</th>
-                                            <th>Socket</th>
-                                            <th>Caché</th>
-                                            <th>Precio Aprox.</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="processor-name">Intel Celeron G5905</td>
-                                            <td>2/2</td>
-                                            <td>3.5 GHz</td>
-                                            <td>LGA1200</td>
-                                            <td>2 niveles</td>
-                                            <td>$1,000-$1,400</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">Intel Pentium Gold G5400</td>
-                                            <td>2/4</td>
-                                            <td>3.7 GHz</td>
-                                            <td>LGA1151</td>
-                                            <td>3 niveles</td>
-                                            <td>$750-$1,477</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">Intel Core i3-12100</td>
-                                            <td>4/8</td>
-                                            <td>3.3-4.3 GHz</td>
-                                            <td>LGA1700</td>
-                                            <td>3 niveles</td>
-                                            <td>$2,200-$2,800</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Athlon 3000G</td>
-                                            <td>2/4</td>
-                                            <td>3.5 GHz</td>
-                                            <td>AM4</td>
-                                            <td>3 niveles</td>
-                                            <td>~$900</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 3 4100</td>
-                                            <td>4/8</td>
-                                            <td>3.8-4.0 GHz</td>
-                                            <td>AM4</td>
-                                            <td>3 niveles</td>
-                                            <td>~$1,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Athlon Gold 3150G</td>
-                                            <td>4/4</td>
-                                            <td>Hasta 3.9 GHz</td>
-                                            <td>AM4</td>
-                                            <td>4 MB L3</td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="content-section">
+                                <h4>¿Qué Define la Gama de un Procesador?</h4>
+                                <p>La gama de un procesador se define por su nivel de rendimiento, indicado por números y letras en su nombre (como i3, i5, i7, i9 para Intel), que señalan el número de núcleos (cores), hilos (threads), velocidad de reloj (GHz), memoria caché y capacidades especiales (como overclocking o gráficos integrados), clasificándolo en gama baja (i3), media (i5), alta (i7) o entusiasta (i9), según la marca y línea de producto.</p>
                             </div>
 
-                            <!-- Gama Media -->
-                            <div class="tier-section">
-                                <div class="tier-header mid-tier">
-                                    <h5><i class="fas fa-balance-scale"></i> PROCESADORES DE GAMA MEDIA</h5>
-                                </div>
-                                <div class="tier-description">
-                                    <ul>
-                                        <li>Equilibrio entre rendimiento, eficiencia y precio</li>
-                                        <li>6-8 núcleos, 12-16 hilos</li>
-                                        <li>Ideales para gaming 1080p, edición ligera, multitarea</li>
-                                    </ul>
+                            <div class="content-section">
+                                <h4>Factores Clave que Definen la Gama</h4>
+                                <div class="memory-grid">
+                                    <div class="memory-card ram">
+                                        <h5><i class="fas fa-microchip"></i> Número de Núcleos e Hilos</h5>
+                                        <p>Más núcleos y hilos permiten manejar más tareas simultáneamente, una característica de gamas superiores (i7/i9).</p>
+                                    </div>
+                                    <div class="memory-card rom">
+                                        <h5><i class="fas fa-tachometer-alt"></i> Velocidad de Reloj (Frecuencia)</h5>
+                                        <p>Medida en GHz, indica qué tan rápido ejecuta instrucciones; una frecuencia más alta generalmente significa mejor rendimiento individual de tareas.</p>
+                                    </div>
+                                    <div class="memory-card cache">
+                                        <h5><i class="fas fa-memory"></i> Memoria Caché</h5>
+                                        <p>Una caché más grande mejora la velocidad de acceso a datos frecuentes, crucial para el rendimiento.</p>
+                                    </div>
+                                    <div class="memory-card virtual">
+                                        <h5><i class="fas fa-calendar-alt"></i> Generación</h5>
+                                        <p>Números más altos en la nomenclatura (ej. 12, 13, 14) indican generaciones más nuevas, con mejoras arquitectónicas y tecnologías.</p>
+                                    </div>
                                 </div>
                                 
-                                <table class="processor-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Procesador</th>
-                                            <th>Núcleos/Hilos</th>
-                                            <th>Frecuencia</th>
-                                            <th>Caché</th>
-                                            <th>Características Especiales</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="processor-name">Intel Core i5-13400</td>
-                                            <td>10/16 (6P+4E)</td>
-                                            <td>2.5-4.6 GHz</td>
-                                            <td>20 MB</td>
-                                            <td>Arquitectura híbrida, DDR4/DDR5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">Intel Core i5-12400F</td>
-                                            <td>6/12</td>
-                                            <td>2.5-4.4 GHz</td>
-                                            <td>18 MB</td>
-                                            <td>Sin gráficos integrados</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">Intel Core i5-12600K</td>
-                                            <td>10/16 (6P+4E)</td>
-                                            <td>3.7-4.9 GHz</td>
-                                            <td>20 MB</td>
-                                            <td>Overclocking, PCIe 5.0</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 5 5600</td>
-                                            <td>6/12</td>
-                                            <td>3.5-4.4 GHz</td>
-                                            <td>35 MB</td>
-                                            <td>Zen 3, eficiente</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 5 7600</td>
-                                            <td>6/12</td>
-                                            <td>3.8-5.1 GHz</td>
-                                            <td>38 MB</td>
-                                            <td>Zen 4, DDR5, PCIe 5.0</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 5 9600X</td>
-                                            <td>6/12</td>
-                                            <td>3.9-5.4 GHz</td>
-                                            <td>38 MB</td>
-                                            <td>Zen 5, alta eficiencia</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="tier-section">
+                                    <div class="tier-header">
+                                        <h5><i class="fas fa-tag"></i> Sufijos (Letras)</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <p>Las letras al final (K, F, H, U, etc.) revelan características específicas:</p>
+                                        <ul>
+                                            <li><strong>'K':</strong> Desbloqueado para overclocking</li>
+                                            <li><strong>'F':</strong> Sin gráficos integrados</li>
+                                            <li><strong>'H':</strong> Alto rendimiento para portátiles</li>
+                                            <li><strong>'U':</strong> Bajo consumo energético</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Gama Alta -->
-                            <div class="tier-section">
-                                <div class="tier-header high-tier">
-                                    <h5><i class="fas fa-crown"></i> PROCESADORES DE GAMA ALTA</h5>
+                            <div class="content-section">
+                                <h4>Ejemplos de Gamas Intel Core</h4>
+                                <div class="tier-section">
+                                    <div class="tier-header">
+                                        <h5><i class="fas fa-leaf"></i> Core i3: Gama de Entrada</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Buena para tareas básicas y uso general</li>
+                                            <li>Navegación web, ofimática, multimedia básico</li>
+                                            <li>Menor número de núcleos e hilos</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="tier-description">
-                                    <ul>
-                                        <li>Máximo rendimiento, tecnologías más avanzadas</li>
-                                        <li>Múltiples núcleos, altas frecuencias, caché amplio</li>
-                                        <li>Para gaming 4K, edición profesional, IA, cálculos científicos</li>
-                                    </ul>
+
+                                <div class="tier-section">
+                                    <div class="tier-header mid-tier">
+                                        <h5><i class="fas fa-balance-scale"></i> Core i5: Gama Media</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Balance ideal entre precio y rendimiento</li>
+                                            <li>Para la mayoría de usuarios y juegos</li>
+                                            <li>Multitarea eficiente</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                
-                                <table class="processor-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Procesador</th>
-                                            <th>Núcleos/Hilos</th>
-                                            <th>Frecuencia</th>
-                                            <th>Caché</th>
-                                            <th>Tecnologías Clave</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="processor-name">Intel Core i9-14900K</td>
-                                            <td>24/32 (8P+16E)</td>
-                                            <td>3.2-6.0 GHz</td>
-                                            <td>36 MB L3</td>
-                                            <td>14ª gen, máximo rendimiento</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">Intel Core i9-13900K</td>
-                                            <td>24/32 (8P+16E)</td>
-                                            <td>3.0-5.8 GHz</td>
-                                            <td>36 MB L3</td>
-                                            <td>Arquitectura híbrida</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">Intel Core Ultra 9 285K</td>
-                                            <td>24/24 (8P+16E)</td>
-                                            <td>3.7-5.7 GHz</td>
-                                            <td>36 MB L3</td>
-                                            <td>Serie Core Ultra</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">Intel Core i7-14700K</td>
-                                            <td>20/28 (8P+12E)</td>
-                                            <td>3.4-5.6 GHz</td>
-                                            <td>33 MB L3</td>
-                                            <td>Raptor Lake Refresh</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 9-7950X3D</td>
-                                            <td>16/32</td>
-                                            <td>4.2-5.7 GHz</td>
-                                            <td>128 MB L3</td>
-                                            <td>3D V-Cache, Zen 4</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 7-7800X3D</td>
-                                            <td>8/16</td>
-                                            <td>4.2-5.0 GHz</td>
-                                            <td>96 MB L3</td>
-                                            <td>Optimizado para gaming</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 9-9950X3D</td>
-                                            <td>16/32</td>
-                                            <td>4.3-5.7 GHz</td>
-                                            <td>144 MB</td>
-                                            <td>Zen 5, 2ª gen V-Cache</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="processor-name">AMD Ryzen 9-7900X</td>
-                                            <td>12/24</td>
-                                            <td>4.7-5.6 GHz</td>
-                                            <td>76 MB</td>
-                                            <td>Zen 4, alto rendimiento</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+
+                                <div class="tier-section">
+                                    <div class="tier-header high-tier">
+                                        <h5><i class="fas fa-crown"></i> Core i7: Gama Alta/Media-Alta</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Para multitarea exigente</li>
+                                            <li>Creación de contenido y gaming de alto nivel</li>
+                                            <li>Mayor número de núcleos y caché</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="tier-section">
+                                    <div class="tier-header high-tier">
+                                        <h5><i class="fas fa-rocket"></i> Core i9 / Core Ultra 9: Gama Entusiasta/Profesional</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Para el máximo rendimiento</li>
+                                            <li>Tareas muy pesadas y workstations</li>
+                                            <li>Máximo número de núcleos y tecnologías avanzadas</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <h4>Gamas AMD Ryzen</h4>
+                                <div class="tier-section">
+                                    <div class="tier-header">
+                                        <h5><i class="fas fa-leaf"></i> Gama de Entrada (Ryzen 3)</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Para tareas básicas</li>
+                                            <li>Navegación, streaming ligero</li>
+                                            <li>Excelente eficiencia energética</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="tier-section">
+                                    <div class="tier-header mid-tier">
+                                        <h5><i class="fas fa-gamepad"></i> Gama Media (Ryzen 5)</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Ideal para gaming moderno</li>
+                                            <li>Multitarea, edición de video/foto</li>
+                                            <li>Mejor relación precio-rendimiento</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="tier-section">
+                                    <div class="tier-header high-tier">
+                                        <h5><i class="fas fa-video"></i> Gama Alta (Ryzen 7)</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Para streamers, creadores de contenido</li>
+                                            <li>Edición profesional</li>
+                                            <li>Alto rendimiento multi-núcleo</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="tier-section">
+                                    <div class="tier-header high-tier">
+                                        <h5><i class="fas fa-server"></i> Gama Entusiasta (Ryzen 9)</h5>
+                                    </div>
+                                    <div class="tier-description">
+                                        <ul>
+                                            <li>Máximo rendimiento para workstations</li>
+                                            <li>Renderizado pesado, juegos exigentes</li>
+                                            <li>Tecnologías más avanzadas como 3D V-Cache</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
