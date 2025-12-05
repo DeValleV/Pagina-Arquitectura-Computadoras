@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Desarmado de Equipo | Arquitectura de Computadoras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #1a202c;
+            --light: #2d3748;
+            --text: #e2e8f0;
+            --text-light: #a0aec0;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --info: #4299e1;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .main-content {
+            background: linear-gradient(135deg, rgba(26,32,44,0.95) 0%, rgba(26,32,44,0.85) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .practice-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .practice-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .practice-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .practice-section {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .practice-section h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .practice-section h3 i {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .practice-section p {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .components-list {
+            background: var(--dark);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--info);
+        }
+
+        .components-list h4 {
+            color: var(--info);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .component-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .component-item:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .component-item i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .component-item span {
+            color: var(--text);
+            font-weight: 500;
+            display: block;
+        }
+
+        .images-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .image-container {
+            text-align: center;
+            background: var(--dark);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .component-image {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin-bottom: 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .component-image:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .image-caption {
+            font-style: italic;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .process-steps {
+            background: linear-gradient(135deg, rgba(72,187,120,0.1), rgba(72,187,120,0.2));
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--success);
+            margin: 2rem 0;
+        }
+
+        .process-steps h4 {
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .step-card {
+            background: var(--dark);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--success);
+        }
+
+        .step-card h5 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-card h5 .step-number {
+            background: var(--success);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .step-card p {
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(102,126,234,0.2));
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-top: 2rem;
+        }
+
+        .conclusion h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .conclusion p {
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 2rem;
+            }
+            
+            .images-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .components-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 Práctica Desarmado de Equipo</h1>
+            <p class="subtitle">Desensamblaje y reensamblaje completo de componentes de computadora</p>
+        </header>
+
+        <div class="nav-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span style="margin-left: 0.5rem;">Volver al Inicio</span>
+            </a>
+        </div>
+
+        <div class="main-content">
+            <div class="practice-header">
+                <h2>🎯 Práctica de Desensamblaje y Reensamblaje</h2>
+                <p>Experiencia práctica completa de desarmado y armado de equipo de cómputo, identificando y manipulando cada componente interno.</p>
+            </div>
+
+            <div class="practice-section">
+                <h3><i class="fas fa-tools"></i> Proceso de Desensamblaje</h3>
+                <p>En esta práctica se llevó a cabo el desensamblaje completo del equipo, retirando la mayoría de sus componentes internos, con excepción del procesador. Se extrajeron el disipador de calor, los módulos de memoria RAM, la unidad de estado sólido (SSD), la placa madre, adaptador PCI y la fuente de poder.</p>
+
+                <div class="components-list">
+                    <h4>Componentes Extraídos</h4>
+                    <div class="components-grid">
+                        <div class="component-item">
+                            <i class="fas fa-fan"></i>
+                            <span>Disipador de Calor</span>
+                        </div>
+                        <div class="component-item">
+                            <i class="fas fa-memory"></i>
+                            <span>Módulos RAM</span>
+                        </div>
+                        <div class="component-item">
+                            <i class="fas fa-hdd"></i>
+                            <span>Unidad SSD</span>
+                        </div>
+                        <div class="component-item">
+                            <i class="fas fa-microchip"></i>
+                            <span>Placa Madre</span>
+                        </div>
+                        <div class="component-item">
+                            <i class="fas fa-plug"></i>
+                            <span>Adaptador PCI</span>
+                        </div>
+                        <div class="component-item">
+                            <i class="fas fa-bolt"></i>
+                            <span>Fuente de Poder</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-steps">
+                <h4>🔄 Pasos del Proceso</h4>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <h5><span class="step-number">1</span> Preparación</h5>
+                        <p>Desconexión de todos los cables de alimentación y periféricos. Preparación del área de trabajo con herramientas adecuadas.</p>
+                    </div>
+                    <div class="step-card">
+                        <h5><span class="step-number">2</span> Desensamblaje</h5>
+                        <p>Extracción sistemática de componentes: disipador, RAM, SSD, adaptadores PCI, placa madre y fuente de poder.</p>
+                    </div>
+                    <div class="step-card">
+                        <h5><span class="step-number">3</span> Identificación</h5>
+                        <p>Análisis y documentación de cada componente extraído, verificando su estado y características técnicas.</p>
+                    </div>
+                    <div class="step-card">
+                        <h5><span class="step-number">4</span> Reensamblaje</h5>
+                        <p>Instalación cuidadosa de todos los componentes en orden inverso, asegurando conexiones correctas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="images-gallery">
+                <div class="image-container">
+                    <img src="Imagenes/Desarmado1.jpg" alt="Proceso de desarmado - Paso 1" class="component-image">
+                    <p class="image-caption">Inicio del proceso de desensamblaje - Preparación del equipo</p>
+                </div>
+                <div class="image-container">
+                    <img src="Imagenes/Desarmado2.jpg" alt="Proceso de desarmado - Paso 2" class="component-image">
+                    <p class="image-caption">Extracción de componentes internos</p>
+                </div>
+                <div class="image-container">
+                    <img src="Imagenes/Desarmado3.jpg" alt="Proceso de desarmado - Paso 3" class="component-image">
+                    <p class="image-caption">Componentes extraídos y organizados</p>
+                </div>
+                <div class="image-container">
+                    </div>
+                    <img src="Imagenes/Desarmado4.jpg" alt="Proceso de desarmado - Paso 4" class="component-image">
+                    <p class="image-caption">Proceso de reensamblaje</p>
+                </div>
+            </div>
+
+            <div class="practice-section">
+                <h3><i class="fas fa-check-circle"></i> Proceso de Reensamblaje</h3>
+                <p>Al finalizar, se procedió a reensamblar todos los elementos, junto con dispositivos de entrada. Se comprobó que todos los componentes operaban correctamente y que el equipo quedó en condiciones óptimas para seguir siendo utilizado.</p>
+            </div>
+
+            <div class="conclusion">
+                <h4>📋 Conclusiones de la Práctica</h4>
+                <p>Esta práctica permitió adquirir experiencia directa en el manejo de componentes de hardware, comprendiendo la importancia del cuidado en el manejo de cada pieza, las conexiones correctas y la verificación del funcionamiento. El equipo fue exitosamente desensamblado y reensamblado, manteniendo su funcionalidad completa.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
